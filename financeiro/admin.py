@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Conta
+from .models import Conta, Transacao, Categoria
 
 
 class ContaAdmin(admin.ModelAdmin):
@@ -12,4 +12,29 @@ class ContaAdmin(admin.ModelAdmin):
         verbose_name = 'Conta'
         verbose_name_plural = 'Contas'
 
+
+class TransacaoAdmin(admin.ModelAdmin):
+    list_display = ('tipo', 'valor', 'data', 'conta', 'usuario', 'paga')
+    list_filter = ('tipo', 'paga', 'data')
+    search_fields = ('descricao', 'conta__nome', 'usuario__username')
+    ordering = ('-data', '-criada_em')
+    class Meta:
+        model = Transacao
+        verbose_name = 'Transação'
+        verbose_name_plural = 'Transações'
+
+
+class CategoriaAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'tipo', 'usuario', 'criada_em')
+    list_filter = ('tipo',)
+    search_fields = ('nome', 'usuario__username')
+    ordering = ('nome',)
+    class Meta:
+        model = Categoria
+        verbose_name = 'Categoria'
+        verbose_name_plural = 'Categorias'
+
+
 admin.site.register(Conta, ContaAdmin)
+admin.site.register(Transacao, TransacaoAdmin)
+admin.site.register(Categoria, CategoriaAdmin)
