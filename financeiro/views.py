@@ -5,6 +5,12 @@ from .forms import ContaForm, TransacaoForm, CategoriaForm
 
 
 # CRUD de Conta
+def listar_contas(request):
+    if request.user.is_authenticated:
+        contas = Conta.objects.filter(usuario=request.user)
+        # TODO: Criar template listar_contas.html para exibir a lista de contas
+        return render(request, 'listar_contas.html', {'contas': contas})
+
 def criar_conta(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
