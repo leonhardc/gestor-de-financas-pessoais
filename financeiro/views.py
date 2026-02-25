@@ -60,28 +60,74 @@ def deletar_conta(request, conta_id):
     if request.user.is_authenticated:
         try:
             conta = Conta.objects.get(id=conta_id, usuario=request.user)
-            if request.method == 'POST':
-                conta.delete()
-                # TODO: Criar template conta_deletada.html para exibir mensagem de sucesso
-                return render(request, 'conta_deletada.html')
-            # TODO: Criar template confirmar_delecao_conta.html para exibir confirmação de deleção
-            return render(request, 'confirmar_delecao_conta.html', {'conta': conta})
+            conta.delete()
+            return render(request, 'conta_deletada.html')
         except Conta.DoesNotExist:
             # TODO: Criar template conta_nao_encontrada.html para exibir mensagem de erro
             return render(request, 'conta_nao_encontrada.html')
 
 # CRUD de Transação
+def listar_transacoes(request):
+    if request.user.is_authenticated:
+        transacoes = Transacao.objects.filter(usuario=request.user)
+        # TODO: Criar template listar_transacoes.html para exibir a lista de transações
+        return render(request, 'listar_transacoes.html', {'transacoes': transacoes})
+
 def criar_transacao(request):
-    pass
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            # Lógica para exibir o formulário de criação de transação
+            form = TransacaoForm()
+            # TODO: Criar template criar_transacao.html para exibir o formulário
+            return render(request, 'criar_transacao.html', {'form': form})
+        if request.method == 'POST':
+            # Lógica para criar uma nova transação com os dados do formulário
+            form = TransacaoForm(request.POST)
+            if form.is_valid():
+                transacao = form.save(commit=False)
+                transacao.usuario = request.user
+                transacao.save()
+                # TODO: Criar template transacao_criada.html para exibir os detalhes da transação criada
+                return render(request, 'transacao_criada.html', {'transacao': transacao})
 
 def ler_transacao(request, transacao_id):
-    pass
+    if request.user.is_authenticated:
+        try:
+            transacao = Transacao.objects.get(id=transacao_id, usuario=request.user)
+            # TODO: Criar template ler_transacao.html para exibir os detalhes da transação
+            return render(request, 'ler_transacao.html', {'transacao': transacao})
+        except Transacao.DoesNotExist:
+            # TODO: Criar template transacao_nao_encontrada.html para exibir mensagem de erro
+            return render(request, 'transacao_nao_encontrada.html')
 
 def atualizar_transacao(request, transacao_id):
-    pass
+    if request.user.is_authenticated:
+        try:
+            transacao = Transacao.objects.get(id=transacao_id, usuario=request.user)
+            if request.method == 'GET':
+                form = TransacaoForm(instance=transacao)
+                # TODO: Criar template atualizar_transacao.html para exibir o formulário de atualização
+                return render(request, 'atualizar_transacao.html', {'form': form, 'transacao': transacao})
+            if request.method == 'POST':
+                form = TransacaoForm(request.POST, instance=transacao)
+                if form.is_valid():
+                    form.save()
+                    # TODO: Criar template transacao_atualizada.html para exibir os detalhes da transação atualizada
+                    return render(request, 'transacao_atualizada.html', {'transacao': transacao})
+        except Transacao.DoesNotExist:
+            # TODO: Criar template transacao_nao_encontrada.html para exibir mensagem de erro
+            return render(request, 'transacao_nao_encontrada.html')
 
 def deletar_transacao(request, transacao_id):
-    pass
+    if request.user.is_authenticated:
+        try:
+            transacao = Transacao.objects.get(id=transacao_id, usuario=request.user)
+            transacao.delete()
+            # TODO: Criar template transacao_deletada.html para exibir mensagem de sucesso
+            return render(request, 'transacao_deletada.html')
+        except Transacao.DoesNotExist:
+            # TODO: Criar template transacao_nao_encontrada.html para exibir mensagem de erro
+            return render(request, 'transacao_nao_encontrada.html')
 
 # CRUD de Categoria
 def criar_categoria(request):
