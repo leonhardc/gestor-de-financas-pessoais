@@ -18,4 +18,9 @@ urlpatterns = [
     path("transacao/<uuid:pk>/editar/", atualizar_transacao, name="editar_transacao"),
     path("transacao/<uuid:pk>/excluir/", deletar_transacao, name="excluir_transacao"),
     # Categorias
+    path("categorias", listar_categorias, name="listar_categorias"),
+    path("categoria/nova/", criar_categoria, name="nova_categoria"),
+    path("categoria/<uuid:pk>/", ler_categoria, name="ler_categoria"),
+    path("categoria/<uuid:pk>/editar/", atualizar_categoria, name="editar_categoria"),
+    path("categoria/<uuid:pk>/excluir/", deletar_categoria, name="excluir_categoria"),
 ]

@@ -130,14 +130,64 @@ def deletar_transacao(request, transacao_id):
             return render(request, 'transacao_nao_encontrada.html')
 
 # CRUD de Categoria
+def listar_categorias(request):
+    if request.user.is_authenticated:
+        categorias = Categoria.objects.filter(usuario=request.user)
+        # TODO: Criar template listar_categorias.html para exibir a lista de categorias
+        return render(request, 'listar_categorias.html', {'categorias': categorias})
+
 def criar_categoria(request):
-    pass
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            # Lógica para exibir o formulário de criação de categoria
+            form = CategoriaForm()
+            # TODO: Criar template criar_categoria.html para exibir o formulário
+            return render(request, 'criar_categoria.html', {'form': form})
+        if request.method == 'POST':
+            # Lógica para criar uma nova categoria com os dados do formulário
+            form = CategoriaForm(request.POST)
+            if form.is_valid():
+                categoria = form.save(commit=False)
+                categoria.usuario = request.user
+                categoria.save()
+                # TODO: Criar template categoria_criada.html para exibir os detalhes da categoria criada
+                return render(request, 'categoria_criada.html', {'categoria': categoria})
 
 def ler_categoria(request, categoria_id):
-    pass
+    if request.user.is_authenticated:
+        try:
+            categoria = Categoria.objects.get(id=categoria_id, usuario=request.user)
+            # TODO: Criar template ler_categoria.html para exibir os detalhes da categoria
+            return render(request, 'ler_categoria.html', {'categoria': categoria})
+        except Categoria.DoesNotExist:
+            # TODO: Criar template categoria_nao_encontrada.html para exibir mensagem de erro
+            return render(request, 'categoria_nao_encontrada.html')
 
 def atualizar_categoria(request, categoria_id):
-    pass
+    if request.user.is_authenticated:
+        try:
+            categoria = Categoria.objects.get(id=categoria_id, usuario=request.user)
+            if request.method == 'GET':
+                form = CategoriaForm(instance=categoria)
+                # TODO: Criar template atualizar_categoria.html para exibir o formulário de atualização
+                return render(request, 'atualizar_categoria.html', {'form': form, 'categoria': categoria})
+            if request.method == 'POST':
+                form = CategoriaForm(request.POST, instance=categoria)
+                if form.is_valid():
+                    form.save()
+                    # TODO: Criar template categoria_atualizada.html para exibir os detalhes da categoria atualizada
+                    return render(request, 'categoria_atualizada.html', {'categoria': categoria})
+        except Categoria.DoesNotExist:
+            # TODO: Criar template categoria_nao_encontrada.html para exibir mensagem de erro
+            return render(request, 'categoria_nao_encontrada.html')
 
 def deletar_categoria(request, categoria_id):
-    pass
+    if request.user.is_authenticated:
+        try:
+            categoria = Categoria.objects.get(id=categoria_id, usuario=request.user)
+            categoria.delete()
+            # TODO: Criar template categoria_deletada.html para exibir mensagem de sucesso
+            return render(request, 'categoria_deletada.html')
+        except Categoria.DoesNotExist:
+            # TODO: Criar template categoria_nao_encontrada.html para exibir mensagem de erro
+            return render(request, 'categoria_nao_encontrada.html')
