@@ -39,7 +39,7 @@ def criar_conta(request):
         if request.method == 'GET':
             # Lógica para exibir o formulário de criação de conta
             form = ContaForm()
-            return render(request, 'contas/form.html', {'form': form, 'conta': False})
+            return render(request, 'contas/form.html', {'form': form,'tipo': 'conta', 'modo': 'criar'})
         if request.method == 'POST':
             # Lógica para criar uma nova conta com os dados do formulário
             form = ContaForm(request.POST)
@@ -59,9 +59,9 @@ def ler_conta(request, pk):
                 conta = Conta.objects.get(id=pk, usuario=request.user)
                 return render(request, 'contas/detalhes_conta.html', {'conta': conta})
             else:
-                return render(request, 'contas/conta_nao_encontrada.html', context={'conta': False})
+                return render(request, 'contas/conta_nao_encontrada.html', {'tipo': 'conta', 'modo': 'ler'})
         except Conta.DoesNotExist:
-            return render(request, 'contas/conta_nao_encontrada.html', context={'conta': False})
+            return render(request, 'contas/conta_nao_encontrada.html', {'tipo': 'conta', 'modo': 'ler'})
     else:
         return redirect('contas:login')
 
@@ -71,12 +71,12 @@ def atualizar_conta(request, pk):
             conta = Conta.objects.get(id=pk, usuario=request.user)
             if request.method == 'GET':
                 form = ContaForm(instance=conta)
-                return render(request, 'contas/form.html', {'form': form, 'conta': conta})
+                return render(request, 'contas/form.html', {'form': form, 'tipo': 'conta', 'modo': 'editar'})
             if request.method == 'POST':
                 form = ContaForm(request.POST, instance=conta)
                 if form.is_valid():
                     form.save()
-                    return render(request, 'contas/detalhes_conta.html', {'conta': conta})
+                    return render(request, 'contas/detalhes_conta.html', {'conta': conta,})
         except Conta.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html')
     else:
@@ -109,7 +109,7 @@ def criar_transacao(request):
         if request.method == 'GET':
             # Lógica para exibir o formulário de criação de transação
             form = TransacaoForm()
-            return render(request, 'contas/form.html', {'form': form, 'transacao': False})
+            return render(request, 'contas/form.html', {'form': form, 'tipo': 'transacao', 'modo': 'criar'})
         if request.method == 'POST':
             # Lógica para criar uma nova transação com os dados do formulário
             form = TransacaoForm(request.POST)
@@ -137,14 +137,14 @@ def atualizar_transacao(request, pk):
             transacao = Transacao.objects.get(id=pk, usuario=request.user)
             if request.method == 'GET':
                 form = TransacaoForm(instance=transacao)
-                return render(request, 'contas/form.html', {'form': form, 'transacao': transacao})
+                return render(request, 'contas/form.html', {'form': form, 'transacao': transacao, 'tipo': 'transacao', 'modo': 'editar'})
             if request.method == 'POST':
                 form = TransacaoForm(request.POST, instance=transacao)
                 if form.is_valid():
                     form.save()
                     return render(request, 'contas/detalhes_transacao.html', {'transacao': transacao})
         except Transacao.DoesNotExist:
-            return render(request, 'contas/conta_nao_encontrada.html', context={'transacao': False})
+            return render(request, 'contas/conta_nao_encontrada.html', {'tipo': 'transacao', 'modo': 'ler'})
     else:
         return redirect('contas:login')
 
@@ -172,7 +172,7 @@ def criar_categoria(request):
         if request.method == 'GET':
             # Lógica para exibir o formulário de criação de categoria
             form = CategoriaForm()
-            return render(request, 'contas/form.html', {'form': form, 'categoria': False})
+            return render(request, 'contas/form.html', {'form': form, 'tipo': 'categoria', 'modo': 'criar'})
         if request.method == 'POST':
             # Lógica para criar uma nova categoria com os dados do formulário
             form = CategoriaForm(request.POST)
@@ -200,7 +200,7 @@ def atualizar_categoria(request, pk):
             categoria = Categoria.objects.get(id=pk, usuario=request.user)
             if request.method == 'GET':
                 form = CategoriaForm(instance=categoria)
-                return render(request, 'contas/form.html', {'form': form, 'categoria': categoria})
+                return render(request, 'contas/form.html', {'form': form, 'categoria': categoria, 'tipo': 'categoria', 'modo': 'editar'})
             if request.method == 'POST':
                 form = CategoriaForm(request.POST, instance=categoria)
                 if form.is_valid():
