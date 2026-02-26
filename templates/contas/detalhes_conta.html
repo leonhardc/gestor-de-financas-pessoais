@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Minhas Contas{% endblock %}
+
+{% block content %}
+<h1>Minhas Contas > {{ conta.nome }}</h1>
+
+<p><strong>Usuario:</strong> {{ conta.usuario }}</p>
+<p><strong>Nome:</strong> {{ conta.nome }}</p>
+<p><strong>Tipo:</strong> {{ conta.tipo }}</p>
+<p><strong>Ativa:</strong> {{ conta.ativa }}</p>
+<p><strong>Saldo Inicial:</strong> R$ {{ conta.saldo_inicial }}</p>
+<p><strong>Saldo Atual:</strong> R$ {{ conta.saldo_atual }}</p>
+<p><strong>Criada em:</strong> {{ conta.criada_em }}</p>
+{% endblock %}
