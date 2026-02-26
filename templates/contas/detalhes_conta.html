@@ -3,13 +3,55 @@
 {% block title %}Minhas Contas{% endblock %}
 
 {% block content %}
-<h1>Minhas Contas > {{ conta.nome }}</h1>
+<div class="container mt-5">
+    <h1 class="mb-4">Minhas Contas > <strong>{{ conta.nome }}</strong></h1>
 
-<p><strong>Usuario:</strong> {{ conta.usuario }}</p>
-<p><strong>Nome:</strong> {{ conta.nome }}</p>
-<p><strong>Tipo:</strong> {{ conta.tipo }}</p>
-<p><strong>Ativa:</strong> {{ conta.ativa }}</p>
-<p><strong>Saldo Inicial:</strong> R$ {{ conta.saldo_inicial }}</p>
-<p><strong>Saldo Atual:</strong> R$ {{ conta.saldo_atual }}</p>
-<p><strong>Criada em:</strong> {{ conta.criada_em }}</p>
+    <div class="card">
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-2"><strong>Usuário:</strong></p>
+                    <p class="text-muted">{{ conta.usuario }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-2"><strong>Nome:</strong></p>
+                    <p class="text-muted">{{ conta.nome }}</p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-2"><strong>Tipo:</strong></p>
+                    <p class="text-muted">{{ conta.tipo }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-2"><strong>Ativa:</strong></p>
+                    <p class="text-muted">
+                        <span class="badge {% if conta.ativa %}bg-success{% else %}bg-danger{% endif %}">
+                            {% if conta.ativa %}Sim{% else %}Não{% endif %}
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <p class="mb-2"><strong>Saldo Inicial:</strong></p>
+                    <p class="text-success fw-bold">R$ {{ conta.saldo_inicial }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="mb-2"><strong>Saldo Atual:</strong></p>
+                    <p class="text-success fw-bold">R$ {{ conta.saldo_atual }}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-2"><strong>Criada em:</strong></p>
+                    <p class="text-muted">{{ conta.criada_em }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

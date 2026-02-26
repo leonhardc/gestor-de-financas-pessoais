@@ -3,18 +3,75 @@
 {% block title %}Minhas Transações{% endblock %}
 
 {% block content %}
-<h1>Minhas Transações</h1>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="mb-4">Minhas Transações</h1>
+        </div>
+        <div class="col-md-4 text-end">
+            <a href="{% url 'contas:nova_transacao' %}" class="btn btn-primary">Nova Transação</a>
+        </div>
+    </div>
 
-<a href="{% url 'contas:nova_transacao' %}">Nova Transação</a>
+    {% if transacoes %}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Usuário</th>
+                        <th>Conta</th>
+                        <th>Valor</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for transacao in transacoes %}
+                        <tr>
+                            <td>{{ transacao.usuario }}</td>
+                            <td>{{ transacao.conta }}</td>
+                            <td>R$ {{ transacao.valor }}</td>
+                            <td>{{ transacao.data }}</td>
+                            <td>
+                                <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-info">Ver</a>
+                                <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-warning">Editar</a>
+                                <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ transacao.id }}">Excluir</button>
 
-<ul>
-    {% for transacao in transacoes %}
-        <li>
-            {{ transacao.usuario }}:{{ transacao.conta }} - Valor: R$ {{ transacao.valor }} em {{ transacao.data }}
-            <a href="{% url 'contas:ler_transacao' transacao.id %}">Ver</a>
-            <a href="{% url 'contas:atualizar_transacao' transacao.id %}">Editar</a>
-            <a href="{% url 'contas:deletar_transacao' transacao.id %}">Excluir</a>
-        </li>
-    {% endfor %}
-</ul>
+                                <!-- Modal -->
+                                <div class="modal fade" id="deleteModal{{ transacao.id }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirmar exclusão</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Tem certeza que deseja excluir a transação <strong>{{ transacao }}</strong>?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Cancelar
+                                                </button>
+                                                <form method="POST" action="{% url 'contas:deletar_transacao' transacao.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Sim, excluir
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            Nenhuma transação encontrada.
+        </div>
+    {% endif %}
+</div>
 {% endblock %}

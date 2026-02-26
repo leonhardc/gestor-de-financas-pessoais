@@ -3,39 +3,49 @@
 
 {% block content %}
 
-<div class="container mt-4">
-    {% if not conta %}
-        <h2>Nova Conta</h2>
-    {% elif not transacao %}
-        <h2>Nova Transação</h2>
-    {% elif not categoria %}
-        <h2>Nova Categoria</h2>
-    {% elif conta %}
-        <h2>Editar Conta</h2>
-    {% elif transacao %}
-        <h2>Editar Transação</h2>
-    {% elif categoria %}
-        <h2>Editar Categoria</h2>
-    {% elif login %}
-        <h2>Login</h2>
-    {% elif cadastro %}
-        <h2>Cadastro</h2>
-    {% endif %}
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-body p-5">
+                    <h2 class="card-title text-center mb-4 fw-bold text-primary">
+                        {% if tipo == "conta" and modo == "criar" %}
+                            Nova Conta
+                        {% elif tipo == "transacao" and modo == "criar" %}
+                            Nova Transação
+                        {% elif tipo == "categoria" and modo == "criar" %}
+                            Nova Categoria
+                        {% elif tipo == "conta" and modo == "editar" %}
+                            Editar Conta
+                        {% elif tipo == "transacao" and modo == "editar" %}
+                            Editar Transação
+                        {% elif tipo == "categoria" and modo == "editar" %}
+                            Editar Categoria
+                        {% elif tipo == "login" %}
+                            Login
+                        {% elif tipo == "cadastro" %}
+                            Cadastro
+                        {% endif %}
+                    </h2>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form|crispy }}
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
 
-        <button type="submit" class="btn btn-primary mt-3">
-            {% if login %}
-                Entrar
-            {% elif cadastro %}
-                Cadastrar
-            {% else %}
-                Salvar
-            {% endif %}
-        </button>
-    </form>
+                        <button type="submit" class="btn btn-primary w-100 fw-bold mt-4 py-2">
+                            {% if login %}
+                                Entrar
+                            {% elif cadastro %}
+                                Cadastrar
+                            {% else %}
+                                Salvar
+                            {% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

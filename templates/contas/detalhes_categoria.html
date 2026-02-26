@@ -3,10 +3,32 @@
 {% block title %}Minhas Categorias{% endblock %}
 
 {% block content %}
-<h1>Minhas Categorias > {{ categoria.nome }}</h1>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="display-5">Minhas Categorias <span class="text-muted">></span> {{ categoria.nome }}</h1>
+        </div>
+    </div>
 
-<p><strong>Usuario:</strong> {{ categoria.usuario }}</p>
-<p><strong>Nome:</strong> {{ categoria.nome }}</p>
-<p><strong>Tipo:</strong> {{ categoria.tipo }}</p>
-<p><strong>Criada em:</strong> {{ categoria.criada_em }}</p>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Usuario:</strong> {{ categoria.usuario }}
+                    </p>
+                    <p class="card-text">
+                        <strong>Nome:</strong> {{ categoria.nome }}
+                    </p>
+                    <p class="card-text">
+                        <strong>Tipo:</strong> <span class="badge bg-secondary">{{ categoria.tipo }}</span>
+                    </p>
+                    <p class="card-text">
+                        <strong>Criada em:</strong> <small class="text-muted">{{ categoria.criada_em }}</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

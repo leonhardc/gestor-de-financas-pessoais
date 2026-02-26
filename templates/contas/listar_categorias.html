@@ -3,18 +3,69 @@
 {% block title %}Minhas Categorias{% endblock %}
 
 {% block content %}
-<h1>Minhas Categorias</h1>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="mb-4">Minhas Categorias</h1>
+        </div>
+        <div class="col-auto">
+            <a href="{% url 'contas:nova_categoria' %}" class="btn btn-primary">Nova Categoria</a>
+        </div>
+    </div>
 
-<a href="{% url 'contas:nova_categoria' %}">Nova Categoria</a>
+    <div class="row">
+        <div class="col">
+            {% if categorias %}
+                <div class="list-group">
+                    {% for categoria in categorias %}
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ categoria.nome }}</h6>
+                                    <small class="text-muted">{{ categoria.criada_em }}</small>
+                                </div>
+                                <div>
+                                    <a href="{% url 'contas:ler_categoria' categoria.id %}" class="btn btn-sm btn-info">Ver</a>
+                                    <a href="{% url 'contas:atualizar_categoria' categoria.id %}" class="btn btn-sm btn-warning">Editar</a>
+                                    <!-- <a href="{% url 'contas:deletar_categoria' categoria.id %}" class="btn btn-sm btn-danger">Excluir</a> -->
+                                     <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ categoria.id }}">Excluir</button>
 
-<ul>
-    {% for categoria in categorias %}
-        <li>
-            {{ categoria.nome }}:{{ categoria.criada_em }}
-            <a href="{% url 'contas:ler_categoria' categoria.id %}">Ver</a>
-            <a href="{% url 'contas:atualizar_categoria' categoria.id %}">Editar</a>
-            <a href="{% url 'contas:deletar_categoria' categoria.id %}">Excluir</a>
-        </li>
-    {% endfor %}
-</ul>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="deleteModal{{ categoria.id }}" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Confirmar exclusão</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Tem certeza que deseja excluir a categoria <strong>{{ categoria.nome }}</strong>?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                        Cancelar
+                                                    </button>
+                                                    <form method="POST" action="{% url 'contas:deletar_categoria' categoria.id %}">
+                                                        {% csrf_token %}
+                                                        <button type="submit" class="btn btn-danger">
+                                                            Sim, excluir
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    Nenhuma categoria encontrada.
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
