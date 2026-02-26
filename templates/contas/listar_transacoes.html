@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Minhas Contas{% endblock %}
+
+{% block content %}
+<h1>Minhas Contas</h1>
+
+<a href="{% url 'contas:nova_conta' %}">Nova Conta</a>
+
+<ul>
+    {% for transacao in transacoes %}
+        <li>
+            {{ transacao.usuario }}:{{ transacao.conta }} - Valor: R$ {{ transacao.valor }} em {{ transacao.data }}
+            <a href="{% url 'contas:ler_transacao' transacao.id %}">Ver</a>
+            <a href="{% url 'contas:atualizar_transacao' transacao.id %}">Editar</a>
+            <a href="{% url 'contas:deletar_transacao' transacao.id %}">Excluir</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

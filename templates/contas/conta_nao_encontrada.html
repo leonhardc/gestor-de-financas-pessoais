@@ -3,8 +3,18 @@
 {% block title %}Minhas Contas{% endblock %}
 
 {% block content %}
-<h1>Minhas Contas</h1>
 
-<p>A conta que você está tentando acessar não foi encontrada ou não pertence a você.</p>
-
+{% if not conta %}
+    <h1>Minhas Contas</h1>
+    <p>A conta que você está tentando acessar não foi encontrada ou não pertence a você.</p>
+{% elif not transacao %}
+    <h1>Minhas Transações</h1>
+    <p>A transação que você está tentando acessar não foi encontrada ou não pertence a você.</p>
+{% elif not categoria %}
+    <h1>Minhas Categorias</h1>
+    <p>A categoria que você está tentando acessar não foi encontrada ou não pertence a você.</p>
+{% else %}
+    <h1>Erro</h1>
+    <p>O item que você está tentando acessar não foi encontrado ou não pertence a você.</p>
+{% endif %}
 {% endblock %}
