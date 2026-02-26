@@ -1,5 +1,5 @@
 from datetime import timezone
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import Conta, Transacao, Categoria
 from .forms import ContaForm, TransacaoForm, CategoriaForm
 
@@ -8,16 +8,14 @@ from .forms import ContaForm, TransacaoForm, CategoriaForm
 def listar_contas(request):
     if request.user.is_authenticated:
         contas = Conta.objects.filter(usuario=request.user)
-        # TODO: Criar template listar_contas.html para exibir a lista de contas
-        return render(request, 'listar_contas.html', {'contas': contas})
+        return render(request, 'contas/listar_contas.html', {'contas': contas})
 
 def criar_conta(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
             # Lógica para exibir o formulário de criação de conta
             form = ContaForm()
-            # TODO: Criar template criar_conta.html para exibir o formulário
-            return render(request, 'criar_conta.html', {'form': form})
+            return render(request, 'contas/forms.html', {'form': form})
         if request.method == 'POST':
             # Lógica para criar uma nova conta com os dados do formulário
             form = ContaForm(request.POST)
@@ -25,18 +23,15 @@ def criar_conta(request):
                 conta = form.save(commit=False)
                 conta.usuario = request.user
                 conta.save()
-                # TODO: Criar template conta_criada.html para exibir os detalhes da conta criada
-                return render(request, 'conta_criada.html', {'conta': conta})
+                return render(request, 'contas/detalhes_conta.html', {'conta': conta})
 
 def ler_conta(request, conta_id):
     if request.user.is_authenticated:
         try:
             conta = Conta.objects.get(id=conta_id, usuario=request.user)
-            # TODO: Criar template ler_conta.html para exibir os detalhes da conta
-            return render(request, 'ler_conta.html', {'conta': conta})
+            return render(request, 'contas/detalhes_conta.html', {'conta': conta})
         except Conta.DoesNotExist:
-            # TODO: Criar template conta_nao_encontrada.html para exibir mensagem de erro
-            return render(request, 'conta_nao_encontrada.html')
+            return render(request, 'contas/conta_nao_encontrada.html')
 
 def atualizar_conta(request, conta_id):
     if request.user.is_authenticated:
@@ -45,26 +40,28 @@ def atualizar_conta(request, conta_id):
             if request.method == 'GET':
                 form = ContaForm(instance=conta)
                 # TODO: Criar template atualizar_conta.html para exibir o formulário de atualização
-                return render(request, 'atualizar_conta.html', {'form': form, 'conta': conta})
+                return render(request, 'contas/forms.html', {'form': form, 'conta': conta})
             if request.method == 'POST':
                 form = ContaForm(request.POST, instance=conta)
                 if form.is_valid():
                     form.save()
                     # TODO: Criar template conta_atualizada.html para exibir os detalhes da conta atualizada
-                    return render(request, 'conta_atualizada.html', {'conta': conta})
+                    return render(request, 'contas/detalhes_conta.html', {'conta': conta})
         except Conta.DoesNotExist:
             # TODO: Criar template conta_nao_encontrada.html para exibir mensagem de erro
-            return render(request, 'conta_nao_encontrada.html')
+            return render(request, 'contas/conta_nao_encontrada.html')
 
 def deletar_conta(request, conta_id):
     if request.user.is_authenticated:
         try:
             conta = Conta.objects.get(id=conta_id, usuario=request.user)
             conta.delete()
-            return render(request, 'conta_deletada.html')
+            # TODO: Adicionar mensagem de conta deletada com sucesso
+            # return render(request, 'conta_deletada.html')
+            return redirect('contas:listar_contas')
         except Conta.DoesNotExist:
             # TODO: Criar template conta_nao_encontrada.html para exibir mensagem de erro
-            return render(request, 'conta_nao_encontrada.html')
+            return render(request, 'contas/conta_nao_encontrada.html')
 
 # CRUD de Transação
 def listar_transacoes(request):
@@ -79,7 +76,7 @@ def criar_transacao(request):
             # Lógica para exibir o formulário de criação de transação
             form = TransacaoForm()
             # TODO: Criar template criar_transacao.html para exibir o formulário
-            return render(request, 'criar_transacao.html', {'form': form})
+            return render(request, 'contas/forms.html', {'form': form})
         if request.method == 'POST':
             # Lógica para criar uma nova transação com os dados do formulário
             form = TransacaoForm(request.POST)
@@ -107,7 +104,7 @@ def atualizar_transacao(request, transacao_id):
             if request.method == 'GET':
                 form = TransacaoForm(instance=transacao)
                 # TODO: Criar template atualizar_transacao.html para exibir o formulário de atualização
-                return render(request, 'atualizar_transacao.html', {'form': form, 'transacao': transacao})
+                return render(request, 'contas/forms.html', {'form': form, 'transacao': transacao})
             if request.method == 'POST':
                 form = TransacaoForm(request.POST, instance=transacao)
                 if form.is_valid():
@@ -142,7 +139,7 @@ def criar_categoria(request):
             # Lógica para exibir o formulário de criação de categoria
             form = CategoriaForm()
             # TODO: Criar template criar_categoria.html para exibir o formulário
-            return render(request, 'criar_categoria.html', {'form': form})
+            return render(request, 'contas/forms.html', {'form': form})
         if request.method == 'POST':
             # Lógica para criar uma nova categoria com os dados do formulário
             form = CategoriaForm(request.POST)
@@ -170,7 +167,7 @@ def atualizar_categoria(request, categoria_id):
             if request.method == 'GET':
                 form = CategoriaForm(instance=categoria)
                 # TODO: Criar template atualizar_categoria.html para exibir o formulário de atualização
-                return render(request, 'atualizar_categoria.html', {'form': form, 'categoria': categoria})
+                return render(request, 'contas/forms.html', {'form': form, 'categoria': categoria})
             if request.method == 'POST':
                 form = CategoriaForm(request.POST, instance=categoria)
                 if form.is_valid():
