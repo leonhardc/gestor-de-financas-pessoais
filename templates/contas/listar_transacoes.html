@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Minhas Contas{% endblock %}
+{% block title %}Minhas Transações{% endblock %}
 
 {% block content %}
-<h1>Minhas Contas</h1>
+<h1>Minhas Transações</h1>
 
-<a href="{% url 'contas:nova_conta' %}">Nova Conta</a>
+<a href="{% url 'contas:nova_transacao' %}">Nova Transação</a>
 
 <ul>
     {% for transacao in transacoes %}
