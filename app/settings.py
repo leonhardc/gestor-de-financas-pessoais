@@ -29,6 +29,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
 
 MIDDLEWARE = [
@@ -46,7 +48,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [ BASE_DIR / 'templates' ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -112,8 +114,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-
-
+# Default message key field type
 MESSAGE_TAGS = {
     constants.INFO:'alert-info',
     constants.DEBUG:'alert-info',
@@ -121,3 +122,7 @@ MESSAGE_TAGS = {
     constants.ERROR:'alert-danger',
     constants.WARNING:'alert-warning',
 }
+
+# Configurações do Crispy Forms para usar o Bootstrap 5
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
