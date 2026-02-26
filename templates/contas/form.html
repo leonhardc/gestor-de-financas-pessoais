@@ -4,14 +4,36 @@
 {% block content %}
 
 <div class="container mt-4">
-    <h2>Nova Conta</h2>
+    {% if not conta %}
+        <h2>Nova Conta</h2>
+    {% elif not transacao %}
+        <h2>Nova Transação</h2>
+    {% elif not categoria %}
+        <h2>Nova Categoria</h2>
+    {% elif conta %}
+        <h2>Editar Conta</h2>
+    {% elif transacao %}
+        <h2>Editar Transação</h2>
+    {% elif categoria %}
+        <h2>Editar Categoria</h2>
+    {% elif login %}
+        <h2>Login</h2>
+    {% elif cadastro %}
+        <h2>Cadastro</h2>
+    {% endif %}
 
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
 
         <button type="submit" class="btn btn-primary mt-3">
-            Salvar
+            {% if login %}
+                Entrar
+            {% elif cadastro %}
+                Cadastrar
+            {% else %}
+                Salvar
+            {% endif %}
         </button>
     </form>
 </div>

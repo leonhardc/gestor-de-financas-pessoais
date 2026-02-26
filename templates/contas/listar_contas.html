@@ -3,18 +3,65 @@
 {% block title %}Minhas Contas{% endblock %}
 
 {% block content %}
-<h1>Minhas Contas</h1>
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Minhas Contas</h1>
+        <a href="{% url 'contas:nova_conta' %}" class="btn btn-primary">+ Nova Conta</a>
+    </div>
 
-<a href="{% url 'contas:nova_conta' %}">Nova Conta</a>
+    {% if contas %}
+    <div class="row g-3">
+        {% for conta in contas %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">{{ conta.nome }}</h5>
+                    <p class="card-text">
+                        <strong>Saldo:</strong>
+                        <span class="text-success">R$ {% if conta.saldo_atual %}{{ conta.saldo_atual }}{% else %}0.00{%endif %}</span>
+                    </p>
+                </div>
+                <div class="card-footer bg-white border-top">
+                    <div class="btn-group w-100 gap-2" role="group">
+                        <a href="{% url 'contas:ler_conta' conta.id %}" class="btn btn-sm btn-info rounded">Ver</a>
+                        <a href="{% url 'contas:atualizar_conta' conta.id %}" class="btn btn-sm btn-warning rounded">Editar</a>
+                        <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ conta.id }}">Excluir</button>
 
-<ul>
-    {% for conta in contas %}
-        <li>
-            {{ conta.nome }} - Saldo: R$ {{ conta.saldo }}
-            <a href="{% url 'contas:ler_conta' conta.id %}">Ver</a>
-            <a href="{% url 'contas:atualizar_conta' conta.id %}">Editar</a>
-            <a href="{% url 'contas:deletar_conta' conta.id %}">Excluir</a>
-        </li>
-    {% endfor %}
-</ul>
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteModal{{ conta.id }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirmar exclusão</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Tem certeza que deseja excluir a conta <strong>{{ conta.nome }}</strong>?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Cancelar
+                                        </button>
+                                        <form method="POST" action="{% url 'contas:deletar_conta' conta.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-danger">
+                                                Sim, excluir
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        Nenhuma conta cadastrada. <a href="{% url 'contas:nova_conta' %}">Criar primeira conta</a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}
