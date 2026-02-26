@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Minhas Categorias{% endblock %}
+
+{% block content %}
+<h1>Minhas Categorias > {{ categoria.nome }}</h1>
+
+<p><strong>Usuario:</strong> {{ categoria.usuario }}</p>
+<p><strong>Nome:</strong> {{ categoria.nome }}</p>
+<p><strong>Tipo:</strong> {{ categoria.tipo }}</p>
+<p><strong>Criada em:</strong> {{ categoria.criada_em }}</p>
+{% endblock %}
