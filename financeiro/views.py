@@ -1,7 +1,29 @@
 from datetime import timezone
+from django.contrib.auth import authenticate, login
 from django.shortcuts import redirect, render
 from .models import Conta, Transacao, Categoria
-from .forms import ContaForm, TransacaoForm, CategoriaForm
+from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm
+
+# Operacoes de Login
+
+def login(request):
+    if request.method == 'GET':
+        form = LoginForm()
+        return render(request, 'contas/form.html', {'form': form, 'login': True})
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            login_user = authenticate(request, username=username, password=password)
+            if login_user is not None:
+                login(request, login_user)
+                return redirect('contas:listar_contas')
+            else:
+                form.add_error(None, 'Usuário ou senha inválidos')
+                return render(request, 'contas/form.html', {'form': form, 'login': True})
+        else:
+            return render(request, 'contas/form.html', {'form': form, 'login': True})
 
 
 # CRUD de Conta
@@ -9,13 +31,15 @@ def listar_contas(request):
     if request.user.is_authenticated:
         contas = Conta.objects.filter(usuario=request.user)
         return render(request, 'contas/listar_contas.html', {'contas': contas})
+    else:
+        return redirect('contas:login')
 
 def criar_conta(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
             # Lógica para exibir o formulário de criação de conta
             form = ContaForm()
-            return render(request, 'contas/form.html', {'form': form})
+            return render(request, 'contas/form.html', {'form': form, 'conta': False})
         if request.method == 'POST':
             # Lógica para criar uma nova conta com os dados do formulário
             form = ContaForm(request.POST)
@@ -24,23 +48,27 @@ def criar_conta(request):
                 conta.usuario = request.user
                 conta.save()
                 return render(request, 'contas/detalhes_conta.html', {'conta': conta})
+    else: 
+        return redirect('contas:login')
 
-def ler_conta(request, uuid):
+def ler_conta(request, pk):
     if request.user.is_authenticated:
         try:
-            conta = Conta.objects.filter(id=uuid, usuario=request.user).exists()
+            conta = Conta.objects.filter(id=pk, usuario=request.user).exists()
             if conta:
-                conta = Conta.objects.get(id=uuid, usuario=request.user)
+                conta = Conta.objects.get(id=pk, usuario=request.user)
                 return render(request, 'contas/detalhes_conta.html', {'conta': conta})
             else:
                 return render(request, 'contas/conta_nao_encontrada.html', context={'conta': False})
         except Conta.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html', context={'conta': False})
+    else:
+        return redirect('contas:login')
 
-def atualizar_conta(request, uuid):
+def atualizar_conta(request, pk):
     if request.user.is_authenticated:
         try:
-            conta = Conta.objects.get(id=uuid, usuario=request.user)
+            conta = Conta.objects.get(id=pk, usuario=request.user)
             if request.method == 'GET':
                 form = ContaForm(instance=conta)
                 return render(request, 'contas/form.html', {'form': form, 'conta': conta})
@@ -51,28 +79,37 @@ def atualizar_conta(request, uuid):
                     return render(request, 'contas/detalhes_conta.html', {'conta': conta})
         except Conta.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html')
+    else:
+        return redirect('contas:login')
 
-def deletar_conta(request, uuid):
+def deletar_conta(request, pk):
     if request.user.is_authenticated:
         try:
-            conta = Conta.objects.get(id=uuid, usuario=request.user)
-            conta.delete()
-            return redirect('contas:listar_contas')
+            if request.method == 'POST':
+                conta = Conta.objects.get(id=pk, usuario=request.user)
+                conta.delete()
+                return redirect('contas:listar_contas')
+            else :
+                return redirect('contas:listar_contas')
         except Conta.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html')
+    else:
+        return redirect('contas:login')
 
 # CRUD de Transação
 def listar_transacoes(request):
     if request.user.is_authenticated:
         transacoes = Transacao.objects.filter(usuario=request.user)
         return render(request, 'contas/listar_transacoes.html', {'transacoes': transacoes})
+    else:
+        return redirect('contas:login')
 
 def criar_transacao(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
             # Lógica para exibir o formulário de criação de transação
             form = TransacaoForm()
-            return render(request, 'contas/form.html', {'form': form})
+            return render(request, 'contas/form.html', {'form': form, 'transacao': False})
         if request.method == 'POST':
             # Lógica para criar uma nova transação com os dados do formulário
             form = TransacaoForm(request.POST)
@@ -81,19 +118,23 @@ def criar_transacao(request):
                 transacao.usuario = request.user
                 transacao.save()
                 return render(request, 'contas/detalhes_transacao.html', {'transacao': transacao})
+    else:
+        return redirect('contas:login')
 
-def ler_transacao(request, uuid):
+def ler_transacao(request, pk):
     if request.user.is_authenticated:
         try:
-            transacao = Transacao.objects.get(id=uuid, usuario=request.user)
+            transacao = Transacao.objects.get(id=pk, usuario=request.user)
             return render(request, 'contas/detalhes_transacao.html', {'transacao': transacao})
         except Transacao.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html', context={'transacao': False})
+    else:
+        return redirect('contas:login')
 
-def atualizar_transacao(request, uuid):
+def atualizar_transacao(request, pk):
     if request.user.is_authenticated:
         try:
-            transacao = Transacao.objects.get(id=uuid, usuario=request.user)
+            transacao = Transacao.objects.get(id=pk, usuario=request.user)
             if request.method == 'GET':
                 form = TransacaoForm(instance=transacao)
                 return render(request, 'contas/form.html', {'form': form, 'transacao': transacao})
@@ -104,30 +145,34 @@ def atualizar_transacao(request, uuid):
                     return render(request, 'contas/detalhes_transacao.html', {'transacao': transacao})
         except Transacao.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html', context={'transacao': False})
+    else:
+        return redirect('contas:login')
 
-def deletar_transacao(request, uuid):
+def deletar_transacao(request, pk):
     if request.user.is_authenticated:
         try:
-            transacao = Transacao.objects.get(id=uuid, usuario=request.user)
+            transacao = Transacao.objects.get(id=pk, usuario=request.user)
             transacao.delete()
             # TODO: Criar template transacao_deletada.html para exibir mensagem de sucesso
-            return render(request, 'transacao_deletada.html')
+            return render(request, 'contas/listar_transacoes.html')
         except Transacao.DoesNotExist:
             # TODO: Criar template transacao_nao_encontrada.html para exibir mensagem de erro
-            return render(request, 'transacao_nao_encontrada.html')
+            return render(request, 'contas/conta_nao_encontrada.html', context={'transacao': False})
 
 # CRUD de Categoria
 def listar_categorias(request):
     if request.user.is_authenticated:
         categorias = Categoria.objects.filter(usuario=request.user)
         return render(request, 'contas/listar_categorias.html', {'categorias': categorias})
+    else:
+        return redirect('contas:login')
 
 def criar_categoria(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
             # Lógica para exibir o formulário de criação de categoria
             form = CategoriaForm()
-            return render(request, 'contas/form.html', {'form': form})
+            return render(request, 'contas/form.html', {'form': form, 'categoria': False})
         if request.method == 'POST':
             # Lógica para criar uma nova categoria com os dados do formulário
             form = CategoriaForm(request.POST)
@@ -136,19 +181,23 @@ def criar_categoria(request):
                 categoria.usuario = request.user
                 categoria.save()
                 return render(request, 'contas/detalhes_categoria.html', {'categoria': categoria})
+    else:
+        return redirect('contas:login')
 
-def ler_categoria(request, uuid):
+def ler_categoria(request, pk):
     if request.user.is_authenticated:
         try:
-            categoria = Categoria.objects.get(id=uuid, usuario=request.user)
+            categoria = Categoria.objects.get(id=pk, usuario=request.user)
             return render(request, 'contas/detalhes_categoria.html', {'categoria': categoria})
         except Categoria.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html')
+    else:
+        return redirect('contas:login')
 
-def atualizar_categoria(request, uuid):
+def atualizar_categoria(request, pk):
     if request.user.is_authenticated:
         try:
-            categoria = Categoria.objects.get(id=uuid, usuario=request.user)
+            categoria = Categoria.objects.get(id=pk, usuario=request.user)
             if request.method == 'GET':
                 form = CategoriaForm(instance=categoria)
                 return render(request, 'contas/form.html', {'form': form, 'categoria': categoria})
@@ -159,12 +208,16 @@ def atualizar_categoria(request, uuid):
                     return render(request, 'contas/detalhes_categoria.html', {'categoria': categoria})
         except Categoria.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html')
+    else:
+        return redirect('contas:login')
 
-def deletar_categoria(request, uuid):
+def deletar_categoria(request, pk):
     if request.user.is_authenticated:
         try:
-            categoria = Categoria.objects.get(id=uuid, usuario=request.user)
+            categoria = Categoria.objects.get(id=pk, usuario=request.user)
             categoria.delete()
             return render(request, 'contas/listar_categorias.html')
         except Categoria.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html')
+    else:
+       return redirect('contas:login')

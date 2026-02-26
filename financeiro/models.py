@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from decimal import Decimal
 from django.db.models import Sum
+import uuid
 
 # Class Conta representa uma conta financeira do usuário, como conta corrente, poupança, carteira, etc.
 class Conta(models.Model):
@@ -11,6 +12,7 @@ class Conta(models.Model):
         CARTEIRA = 'carteira', 'Carteira'
         INVESTIMENTO = 'investimento', 'Investimento'
         OUTROS = 'outros', 'Outros'
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name='ID')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
     nome = models.CharField(max_length=100, verbose_name='Nome')
     tipo = models.CharField(max_length=20, choices=TipoConta.choices, verbose_name='Tipo da Conta')
@@ -33,6 +35,7 @@ class Transacao(models.Model):
     class TipoTransacao(models.TextChoices):
         RECEITA = 'receita', 'Receita'
         DESPESA = 'despesa', 'Despesa'
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name='ID')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
     conta = models.ForeignKey(Conta, on_delete=models.CASCADE, verbose_name='Conta')
     tipo = models.CharField(max_length=20, choices=TipoTransacao.choices, verbose_name='Tipo da Transação')
@@ -60,6 +63,7 @@ class Transacao(models.Model):
 
 # Class Categoria representa uma categoria para classificar as transações, como alimentação, transporte, lazer, etc. Cada categoria é associada a um usuário e tem um tipo (receita ou despesa).
 class Categoria(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name='ID')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
     nome = models.CharField(max_length=100, verbose_name='Nome da Categoria')
     tipo = models.CharField(max_length=20, choices=Transacao.TipoTransacao.choices, verbose_name='Tipo da Categoria')
