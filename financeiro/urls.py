@@ -4,13 +4,15 @@ from .views import *
 app_name = "contas"
 
 urlpatterns = [
+    # Home
+    path("", index, name="home"),
     # login e logout
     path("login/", login, name="login"),
     path("logout/", logout, name="logout"),
     # Dashboard
     path("dashboard/", dashboard, name="dashboard"),
     # Contas
-    path("", listar_contas, name="listar_contas"),
+    path("contas/", listar_contas, name="listar_contas"),
     path("conta/nova/", criar_conta, name="nova_conta"),
     path("conta/<uuid:pk>/", ler_conta, name="ler_conta"),
     path("conta/<uuid:pk>/editar/", atualizar_conta, name="atualizar_conta"),

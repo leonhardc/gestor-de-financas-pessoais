@@ -5,6 +5,10 @@ from django.views.decorators.http import require_POST
 from .models import Conta, Transacao, Categoria
 from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm
 
+# Index
+def index(request):
+    return render(request, 'index.html')
+
 # Dashboard
 def dashboard(request):
     if request.user.is_authenticated:
@@ -20,7 +24,7 @@ def dashboard(request):
 def login(request):
     if request.method == 'GET':
         form = LoginForm()
-        return render(request, 'contas/form.html', {'form': form, 'login': True})
+        return render(request, 'contas/form.html', {'form': form, 'tipo': 'login'})
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -29,17 +33,17 @@ def login(request):
             login_user = authenticate(request, username=username, password=password)
             if login_user is not None:
                 auth_login(request, login_user)
-                return redirect('contas:listar_contas')
+                return redirect('contas:dashboard')
             else:
                 form.add_error(None, 'Usuário ou senha inválidos')
-                return render(request, 'contas/form.html', {'form': form, 'login': True})
+                return render(request, 'contas/form.html', {'form': form, 'tipo': 'login'})
         else:
-            return render(request, 'contas/form.html', {'form': form, 'login': True})
+            return render(request, 'contas/form.html', {'form': form, 'tipo': 'login'})
 
 @require_POST
 def logout(request):
     auth_logout(request)
-    return redirect('contas:login')
+    return redirect('contas:home')
 
 
 # CRUD de Conta
