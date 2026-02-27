@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <h1 class="display-4">Dashboard</h1>
+            <p class="text-muted">Bem-vindo ao seu gestor de finanças pessoais</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Receita Total</h6>
+                    <h3 class="card-text">R$ 0,00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Despesa Total</h6>
+                    <h3 class="card-text">R$ 0,00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Saldo</h6>
+                    <h3 class="card-text">R$ 0,00</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body">
+                    <h6 class="card-title">Contas</h6>
+                    <h3 class="card-text">0</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Últimas Transações</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Nenhuma transação registrada</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Contas Bancárias</h5>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted">Nenhuma conta registrada</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

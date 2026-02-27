@@ -1,0 +1,32 @@
+<div class="p-3 p-lg-4 h-100 d-flex flex-column">
+	<!-- <h6 class="text-uppercase text-white-50 mb-3">Navegação</h6> -->
+	<div class="list-group list-group-flush mb-3">
+		<a href="{% url 'contas:dashboard' %}" class="list-group-item list-group-item-action bg-dark text-white border-secondary">
+			Dashboard
+		</a>
+		<a href="{% url 'contas:listar_contas' %}" class="list-group-item list-group-item-action bg-dark text-white border-secondary">
+			Contas
+		</a>
+		<a href="{% url 'contas:listar_transacoes' %}" class="list-group-item list-group-item-action bg-dark text-white border-secondary">
+			Transações
+		</a>
+		<a href="{% url 'contas:listar_categorias' %}" class="list-group-item list-group-item-action bg-dark text-white border-secondary">
+			Categorias
+		</a>
+	</div>
+	<div class="mt-auto">
+		<div class="card bg-secondary-subtle border-secondary">
+			<div class="card-body p-2">
+				<div class="d-flex align-items-center justify-content-between">
+					<span class="text-dark">
+						<span class="d-block small text-body-secondary">Logado como</span>
+						<strong>{{ user.username }}</strong>
+					</span>
+					<button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#logoutModal" aria-label="Sair">
+						<i class="bi bi-box-arrow-right fs-5" aria-hidden="true"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
