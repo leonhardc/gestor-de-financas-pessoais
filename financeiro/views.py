@@ -1,8 +1,19 @@
 from datetime import timezone
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_POST
 from .models import Conta, Transacao, Categoria
 from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm
+
+# Dashboard
+def dashboard(request):
+    if request.user.is_authenticated:
+        contas = Conta.objects.filter(usuario=request.user)
+        transacoes = Transacao.objects.filter(usuario=request.user)
+        categorias = Categoria.objects.filter(usuario=request.user)
+        return render(request, 'contas/dashboard.html', {'contas': contas, 'transacoes': transacoes, 'categorias': categorias})
+    else:
+        return redirect('contas:login')
 
 # Operacoes de Login
 
@@ -17,13 +28,18 @@ def login(request):
             password = form.cleaned_data['password']
             login_user = authenticate(request, username=username, password=password)
             if login_user is not None:
-                login(request, login_user)
+                auth_login(request, login_user)
                 return redirect('contas:listar_contas')
             else:
                 form.add_error(None, 'Usuário ou senha inválidos')
                 return render(request, 'contas/form.html', {'form': form, 'login': True})
         else:
             return render(request, 'contas/form.html', {'form': form, 'login': True})
+
+@require_POST
+def logout(request):
+    auth_logout(request)
+    return redirect('contas:login')
 
 
 # CRUD de Conta
