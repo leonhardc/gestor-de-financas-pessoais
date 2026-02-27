@@ -3,45 +3,47 @@
 
 {% block content %}
 
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow-lg border-0">
-                <div class="card-body p-5">
-                    <h2 class="card-title text-center mb-4 fw-bold text-primary">
-                        {% if tipo == "conta" and modo == "criar" %}
-                            Nova Conta
-                        {% elif tipo == "transacao" and modo == "criar" %}
-                            Nova Transação
-                        {% elif tipo == "categoria" and modo == "criar" %}
-                            Nova Categoria
-                        {% elif tipo == "conta" and modo == "editar" %}
-                            Editar Conta
-                        {% elif tipo == "transacao" and modo == "editar" %}
-                            Editar Transação
-                        {% elif tipo == "categoria" and modo == "editar" %}
-                            Editar Categoria
-                        {% elif tipo == "login" %}
-                            Login
-                        {% elif tipo == "cadastro" %}
-                            Cadastro
-                        {% endif %}
-                    </h2>
-
-                    <form method="post">
-                        {% csrf_token %}
-                        {{ form|crispy }}
-
-                        <button type="submit" class="btn btn-primary w-100 fw-bold mt-4 py-2">
-                            {% if login %}
-                                Entrar
-                            {% elif cadastro %}
-                                Cadastrar
-                            {% else %}
-                                Salvar
+<div class="min-vh-100 py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card shadow-lg border-0 bg-white" style="border-radius: 14px;">
+                    <div class="card-body p-5 border border-2 border-primary-subtle rounded-4">
+                        <h2 class="card-title text-center mb-4 fw-bold text-primary">
+                            {% if tipo == "conta" and modo == "criar" %}
+                                Nova Conta
+                            {% elif tipo == "transacao" and modo == "criar" %}
+                                Nova Transação
+                            {% elif tipo == "categoria" and modo == "criar" %}
+                                Nova Categoria
+                            {% elif tipo == "conta" and modo == "editar" %}
+                                Editar Conta
+                            {% elif tipo == "transacao" and modo == "editar" %}
+                                Editar Transação
+                            {% elif tipo == "categoria" and modo == "editar" %}
+                                Editar Categoria
+                            {% elif tipo == "login" %}
+                                Login
+                            {% elif tipo == "cadastro" %}
+                                Cadastro
                             {% endif %}
-                        </button>
-                    </form>
+                        </h2>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form|crispy }}
+
+                            <button type="submit" class="btn btn-primary w-100 fw-bold mt-4 py-2">
+                                {% if login %}
+                                    Entrar
+                                {% elif cadastro %}
+                                    Cadastrar
+                                {% else %}
+                                    Salvar
+                                {% endif %}
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
