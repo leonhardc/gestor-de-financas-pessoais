@@ -14,7 +14,7 @@
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h6 class="card-title">Receita Total</h6>
-                    <h3 class="card-text">R$ 0,00</h3>
+                    <h3 class="card-text">R$ {{ receita_total }}</h3>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
             <div class="card bg-danger text-white">
                 <div class="card-body">
                     <h6 class="card-title">Despesa Total</h6>
-                    <h3 class="card-text">R$ 0,00</h3>
+                    <h3 class="card-text">R$ {{ despesa_total }}</h3>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="card bg-success text-white">
                 <div class="card-body">
                     <h6 class="card-title">Saldo</h6>
-                    <h3 class="card-text">R$ 0,00</h3>
+                    <h3 class="card-text">R$ {{ saldo_total }}</h3>
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@
             <div class="card bg-warning text-white">
                 <div class="card-body">
                     <h6 class="card-title">Contas</h6>
-                    <h3 class="card-text">0</h3>
+                    <h3 class="card-text">{{ contas|length }}</h3>
                 </div>
             </div>
         </div>
