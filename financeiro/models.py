@@ -29,6 +29,24 @@ class Conta(models.Model):
     def __str__(self):
         return f"{self.nome} ({self.usuario.username})"
 
+# Class Categoria representa uma categoria para classificar as transações, como alimentação, transporte, lazer, etc. Cada categoria é associada a um usuário e tem um tipo (receita ou despesa).
+class Categoria(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name='ID')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
+    nome = models.CharField(max_length=100, verbose_name='Nome da Categoria')
+    tipo = models.CharField(
+        max_length=20,
+        choices=(('receita', 'Receita'), ('despesa', 'Despesa')),
+        verbose_name='Tipo da Categoria'
+    )
+    criada_em = models.DateTimeField(auto_now_add=True, verbose_name='Criada em')
+
+    class Meta:
+        unique_together = ('usuario', 'nome', 'tipo')
+        ordering = ['nome']
+
+    def __str__(self):
+        return f"{self.nome} ({self.get_tipo_display()})"
 
 # Class Transacao representa uma transação financeira, que pode ser uma receita ou despesa, associada a uma conta específica do usuário.
 class Transacao(models.Model):
@@ -38,6 +56,7 @@ class Transacao(models.Model):
     id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name='ID')
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
     conta = models.ForeignKey(Conta, on_delete=models.CASCADE, verbose_name='Conta')
+    categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT, verbose_name='Categoria')
     tipo = models.CharField(max_length=20, choices=TipoTransacao.choices, verbose_name='Tipo da Transação')
     valor = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Valor')
     data = models.DateField(verbose_name='Data')
@@ -61,17 +80,3 @@ class Transacao(models.Model):
         return f"{self.tipo.capitalize()} de R${self.valor} em {self.data} - {self.conta.nome}"
     
 
-# Class Categoria representa uma categoria para classificar as transações, como alimentação, transporte, lazer, etc. Cada categoria é associada a um usuário e tem um tipo (receita ou despesa).
-class Categoria(models.Model):
-    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name='ID')
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
-    nome = models.CharField(max_length=100, verbose_name='Nome da Categoria')
-    tipo = models.CharField(max_length=20, choices=Transacao.TipoTransacao.choices, verbose_name='Tipo da Categoria')
-    criada_em = models.DateTimeField(auto_now_add=True, verbose_name='Criada em')
-
-    class Meta:
-        unique_together = ('usuario', 'nome', 'tipo')
-        ordering = ['nome']
-
-    def __str__(self):
-        return f"{self.nome} ({self.get_tipo_display()})"

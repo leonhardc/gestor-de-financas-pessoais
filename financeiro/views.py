@@ -17,7 +17,7 @@ def dashboard(request):
         categorias = Categoria.objects.filter(usuario=request.user)
         receita_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'receita'])
         despesa_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'despesa'])
-        saldo_total = receita_total - despesa_total
+        saldo_total = sum([conta.saldo_atual for conta in contas])
         return render(request, 'contas/dashboard.html', {'contas': contas, 
                                                          'transacoes': transacoes, 
                                                          'categorias': categorias, 
@@ -77,7 +77,10 @@ def criar_conta(request):
                 conta = form.save(commit=False)
                 conta.usuario = request.user
                 conta.save()
-                return render(request, 'contas/detalhes_conta.html', {'conta': conta})
+                # return render(request, 'contas/detalhes_conta.html', {'conta': conta})
+                return redirect('contas:listar_contas')
+            else:
+                return render(request, 'contas/form.html', {'form': form,'tipo': 'conta', 'modo': 'criar'})
     else: 
         return redirect('contas:login')
 
@@ -147,7 +150,10 @@ def criar_transacao(request):
                 transacao = form.save(commit=False)
                 transacao.usuario = request.user
                 transacao.save()
-                return render(request, 'contas/detalhes_transacao.html', {'transacao': transacao})
+                # return render(request, 'contas/detalhes_transacao.html', {'transacao': transacao})
+                return redirect('contas:listar_transacoes')
+            else:
+                return render(request, 'contas/form.html', {'form': form, 'tipo': 'transacao', 'modo': 'criar'})
     else:
         return redirect('contas:login')
 
@@ -210,7 +216,10 @@ def criar_categoria(request):
                 categoria = form.save(commit=False)
                 categoria.usuario = request.user
                 categoria.save()
-                return render(request, 'contas/detalhes_categoria.html', {'categoria': categoria})
+                # return render(request, 'contas/detalhes_categoria.html', {'categoria': categoria})
+                return redirect('contas:listar_categorias')
+            else:
+                return render(request, 'contas/form.html', {'form': form, 'tipo': 'categoria', 'modo': 'criar'})
     else:
         return redirect('contas:login')
 
