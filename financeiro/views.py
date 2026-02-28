@@ -15,7 +15,17 @@ def dashboard(request):
         contas = Conta.objects.filter(usuario=request.user)
         transacoes = Transacao.objects.filter(usuario=request.user)
         categorias = Categoria.objects.filter(usuario=request.user)
-        return render(request, 'contas/dashboard.html', {'contas': contas, 'transacoes': transacoes, 'categorias': categorias})
+        receita_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'receita'])
+        despesa_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'despesa'])
+        saldo_total = receita_total - despesa_total
+        return render(request, 'contas/dashboard.html', {'contas': contas, 
+                                                         'transacoes': transacoes, 
+                                                         'categorias': categorias, 
+                                                         'receita_total': receita_total, 
+                                                         'despesa_total': despesa_total, 
+                                                         'saldo_total': saldo_total
+                                                         }
+                                                    )
     else:
         return redirect('contas:login')
 
