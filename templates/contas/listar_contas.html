@@ -21,6 +21,8 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ conta.nome }}</h5>
                     <p class="card-text">
+                        <strong>Saldo Inicial:</strong>
+                        <span class="text-muted">R$ {% if conta.saldo_inicial %}{{ conta.saldo_inicial }}{% else %}0.00{% endif %}</span><br>
                         <strong>Saldo:</strong>
                         <span class="text-success">R$ {% if conta.saldo_atual %}{{ conta.saldo_atual }}{% else %}0.00{%endif %}</span>
                     </p>
