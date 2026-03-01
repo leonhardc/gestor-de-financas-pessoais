@@ -64,6 +64,13 @@ def dashboard(request):
         # Outros dados...
         contas = Conta.objects.filter(usuario=request.user)
         transacoes = Transacao.objects.filter(usuario=request.user)
+        # # Ultimas 10 transacoes #
+        ultimas_transacoes = (
+            Transacao.objects
+            .filter(usuario=request.user)
+            .select_related('categoria', 'conta')
+            .order_by('-data', '-id')[:10]
+        )
         categorias = Categoria.objects.filter(usuario=request.user)
         receita_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'receita'])
         despesa_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'despesa'])
@@ -82,6 +89,7 @@ def dashboard(request):
             'dias': dias,
             'receitas': receitas_lista,
             'despesas': despesas_lista,
+            'ultimas_transacoes': ultimas_transacoes,
         }
 
         return render(request, 'contas/dashboard.html', contexto)
