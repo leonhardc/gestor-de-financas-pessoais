@@ -4,6 +4,9 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 from .models import Conta, Transacao, Categoria
 from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm
+from django.db.models import Sum
+from django.db.models.functions import TruncDay
+from datetime import date
 
 # Index
 def index(request):
@@ -12,20 +15,76 @@ def index(request):
 # Dashboard
 def dashboard(request):
     if request.user.is_authenticated:
+        # Gerando dados para os graficos do dashboard de pizza de gastos por categoria
+        despesas_por_categoria = (
+            Transacao.objects
+            .filter(usuario=request.user, tipo='despesa')
+            .values('categoria__nome')
+            .annotate(total=Sum('valor'))
+            .order_by('-total')   
+        )
+
+        labels = [item['categoria__nome'] for item in despesas_por_categoria]
+        valores = [item['total'] for item in despesas_por_categoria]
+        # Gerando dados para grafico de linha de despesas e receitas mensais
+        hoje = date.today()
+    
+        transacoes = Transacao.objects.filter(
+            usuario=request.user,
+            data__year=hoje.year,
+            data__month=hoje.month
+        )
+
+        receitas = (
+            transacoes
+            .filter(tipo='receita')
+            .annotate(dia=TruncDay('data'))
+            .values('dia')
+            .annotate(total=Sum('valor'))
+            .order_by('dia')
+        )
+
+        despesas = (
+            transacoes
+            .filter(tipo='despesa')
+            .annotate(dia=TruncDay('data'))
+            .values('dia')
+            .annotate(total=Sum('valor'))
+            .order_by('dia')
+        )
+
+        receitas_dict = {r['dia'].day: float(r['total']) for r in receitas}
+        despesas_dict = {d['dia'].day: float(d['total']) for d in despesas}
+
+        dias = list(range(1, 32))
+
+        receitas_lista = [receitas_dict.get(dia, 0) for dia in dias]
+        despesas_lista = [despesas_dict.get(dia, 0) for dia in dias]
+
+        # Outros dados...
         contas = Conta.objects.filter(usuario=request.user)
         transacoes = Transacao.objects.filter(usuario=request.user)
         categorias = Categoria.objects.filter(usuario=request.user)
         receita_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'receita'])
         despesa_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'despesa'])
         saldo_total = sum([conta.saldo_atual for conta in contas])
-        return render(request, 'contas/dashboard.html', {'contas': contas, 
-                                                         'transacoes': transacoes, 
-                                                         'categorias': categorias, 
-                                                         'receita_total': receita_total, 
-                                                         'despesa_total': despesa_total, 
-                                                         'saldo_total': saldo_total
-                                                         }
-                                                    )
+        
+        # Contexto para o template do dashboard
+        contexto = {
+            'contas': contas, 
+            'transacoes': transacoes, 
+            'categorias': categorias, 
+            'receita_total': receita_total, 
+            'despesa_total': despesa_total, 
+            'saldo_total': saldo_total,
+            'labels': labels,
+            'valores': valores,
+            'dias': dias,
+            'receitas': receitas_lista,
+            'despesas': despesas_lista,
+        }
+
+        return render(request, 'contas/dashboard.html', contexto)
     else:
         return redirect('contas:login')
 
