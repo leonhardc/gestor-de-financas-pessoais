@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container-fluid py-4">
@@ -43,7 +44,33 @@
             </div>
         </div>
     </div>
-
+    <div id="graficos" class="row mb-4">
+        <div id="grafico-despesas" class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Gráfico Mensal</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="graficoMensal"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Despesas por Categoria</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="graficoDespesas"></canvas>
+                </div>
+            </div>
+        </div>
+        {{ labels|json_script:"dashboard-labels" }}
+        {{ valores|json_script:"dashboard-valores" }}
+        {{ dias|json_script:"dashboard-dias" }}
+        {{ receitas|json_script:"dashboard-receitas" }}
+        {{ despesas|json_script:"dashboard-despesas" }}
+    </div>
     <div class="row">
         <div class="col-md-6">
             <div class="card">
