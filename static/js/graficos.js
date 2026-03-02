@@ -14,6 +14,15 @@
             datasets: [{
                 data: valores,
             }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                }
+            },
         }
     });
 })();
