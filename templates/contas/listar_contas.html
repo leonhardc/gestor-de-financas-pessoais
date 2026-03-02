@@ -29,9 +29,15 @@
                 </div>
                 <div class="card-footer bg-white border-top">
                     <div class="btn-group w-100 gap-2" role="group">
-                        <a href="{% url 'contas:ler_conta' conta.id %}" class="btn btn-sm btn-info rounded">Ver</a>
-                        <a href="{% url 'contas:atualizar_conta' conta.id %}" class="btn btn-sm btn-warning rounded">Editar</a>
-                        <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ conta.id }}">Excluir</button>
+                        <a href="{% url 'contas:ler_conta' conta.id %}" class="btn btn-sm btn-info rounded" title="Ver detalhes">
+                            <i class="bi bi-plus-square"></i>
+                        </a>
+                        <a href="{% url 'contas:atualizar_conta' conta.id %}" class="btn btn-sm btn-warning rounded" title="Editar">
+                            <i class="bi bi-pen"></i>
+                        </a>
+                        <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ conta.id }}" title="Excluir">
+                            <i class="bi bi-trash3"></i>
+                        </button>
 
                         <!-- Modal -->
                         <div class="modal fade" id="deleteModal{{ conta.id }}" tabindex="-1">

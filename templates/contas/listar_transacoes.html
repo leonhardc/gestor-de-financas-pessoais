@@ -33,9 +33,15 @@
                             <td>R$ {{ transacao.valor }}</td>
                             <td>{{ transacao.data }}</td>
                             <td>
-                                <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-info">Ver</a>
-                                <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-warning">Editar</a>
-                                <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ transacao.id }}">Excluir</button>
+                                <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-info" title="Ver detalhes">
+                                    <i class="bi bi-plus-square"></i>
+                                </a>
+                                <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-warning" title="Editar">
+                                    <i class="bi bi-pen"></i>
+                                </a>
+                                <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ transacao.id }}" title="Excluir">
+                                    <i class="bi bi-trash3"></i>
+                                </button>
 
                                 <!-- Modal -->
                                 <div class="modal fade" id="deleteModal{{ transacao.id }}" tabindex="-1">

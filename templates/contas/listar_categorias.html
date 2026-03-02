@@ -25,10 +25,15 @@
                                     <small class="text-muted">{{ categoria.criada_em }}</small>
                                 </div>
                                 <div>
-                                    <a href="{% url 'contas:ler_categoria' categoria.id %}" class="btn btn-sm btn-info">Ver</a>
-                                    <a href="{% url 'contas:atualizar_categoria' categoria.id %}" class="btn btn-sm btn-warning">Editar</a>
-                                    <!-- <a href="{% url 'contas:deletar_categoria' categoria.id %}" class="btn btn-sm btn-danger">Excluir</a> -->
-                                     <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ categoria.id }}">Excluir</button>
+                                    <a href="{% url 'contas:ler_categoria' categoria.id %}" class="btn btn-sm btn-info" title="Ver detalhes">
+                                        <i class="bi bi-plus-square"></i>
+                                    </a>
+                                    <a href="{% url 'contas:atualizar_categoria' categoria.id %}" class="btn btn-sm btn-warning" title="Editar">
+                                        <i class="bi bi-pen"></i>
+                                    </a>
+                                     <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ categoria.id }}" title="Excluir">
+                                        <i class="bi bi-trash3"></i>
+                                     </button>
 
                                     <!-- Modal -->
                                     <div class="modal fade" id="deleteModal{{ categoria.id }}" tabindex="-1">
