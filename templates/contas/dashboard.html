@@ -11,7 +11,7 @@
     </div>
 
     <div class="row mb-4">
-        <div class="col-md-3">
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
             <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h6 class="card-title">Receita Total</h6>
@@ -19,24 +19,24 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-danger text-white">
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h6 class="card-title">Despesa Total</h6>
                     <h3 class="card-text">R$ {{ despesa_total }}</h3>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-success text-white">
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h6 class="card-title">Saldo</h6>
                     <h3 class="card-text">R$ {{ saldo_total }}</h3>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card bg-warning text-white">
+        <div class="col-12 col-sm-6 col-lg-3 mb-2">
+            <div class="card bg-primary text-white">
                 <div class="card-body">
                     <h6 class="card-title">Contas</h6>
                     <h3 class="card-text">{{ contas|length }}</h3>
@@ -46,17 +46,17 @@
     </div>
     <div id="graficos" class="row mb-4">
         <div id="grafico-despesas" class="col-md-6">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Gráfico Mensal</h5>
+                    <h5 class="card-title mb-0">Receitas e Despesas Mensais</h5>
                 </div>
-                <div class="card-body">
+                <div class="card-body d-flex align-items-center justify-content-center">
                     <canvas id="graficoMensal"></canvas>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
-            <div class="card">
+            <div class="card h-100">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Despesas por Categoria</h5>
                 </div>

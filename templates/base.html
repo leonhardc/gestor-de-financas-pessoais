@@ -18,6 +18,7 @@
 </head>
 <body class="m-0{% if user.is_authenticated %} vh-100 overflow-hidden d-flex flex-column{% else %} app-bg{% endif %}">
     {% if user.is_authenticated %}
+        <!-- {% include "includes/_navbar.html" %} -->
         <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" tabindex="-1" id="mobileAside" aria-labelledby="mobileAsideLabel">
             <div class="offcanvas-header border-bottom border-secondary">
             <h5 class="offcanvas-title" id="mobileAsideLabel">Menu</h5>
@@ -29,10 +30,11 @@
         </div>
         <div class="container-fluid px-0 flex-grow-1 overflow-hidden">
             <div class="row g-0 h-100">
-            <aside class="d-none d-lg-block col-lg-3 col-xl-2 bg-dark border-end border-secondary h-100 overflow-auto" id="mainAside">
+            <aside class="d-none d-lg-block col-lg-3 col-xl-2 bg-dark border-dark border-end h-100 overflow-auto" id="mainAside">
                 {% include "includes/_asside.html" %}
             </aside>
             <div class="col-12 col-lg-9 col-xl-10 h-100 overflow-auto" id="mainContent">
+                {% include "includes/_navbar.html" %}
                 <div class="d-flex align-items-center gap-2 px-3 px-md-4 py-3">
                 <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileAside" aria-controls="mobileAside">
                     <i class="bi bi-list"></i>
