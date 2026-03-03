@@ -72,13 +72,13 @@
         {{ despesas|json_script:"dashboard-despesas" }}
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6 mb-2">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Últimas Transações</h5>
                 </div>
                 {% if ultimas_transacoes %}
-                    <div class="card-body p-0">
+                    <div class="card-body p-0" style="min-height: 500px;max-height: 500px; overflow-y: auto;">
                         <div class="list-group list-group-flush">
                             {% for transacao in ultimas_transacoes %}
                                 <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
@@ -98,13 +98,13 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6 mb-2">
             <div class="card">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Contas Bancárias</h5>
                 </div>
                 {% if contas %}
-                    <div class="card-body p-0">
+                    <div class="card-body p-0" style="min-height: 500px;max-height: 500px; overflow-y: auto;">
                         <div class="list-group list-group-flush">
                             {% for conta in contas %}
                                 <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
@@ -120,6 +120,35 @@
                 {% else %}
                     <div class="card-body">
                         <p class="text-muted">Nenhuma conta registrada</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6 mb-2">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">Orçamentos Mensais</h5>
+                </div>
+                {% if orcamentos %}
+                    <div class="card-body p-0" style="min-height: 500px;max-height: 500px; overflow-y: auto;">
+                        <div class="list-group list-group-flush">
+                            {% for orcamento in orcamentos %}
+                                <div class="list-group-item px-4 py-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <p class="mb-0 fw-5">{{ orcamento.categoria }}</p>
+                                        <span class="badge bg-info rounded-pill fs-6">R$ {{ orcamento.valor_orcado }}</span>
+                                    </div>
+                                    <div class="progress" role="progressbar" aria-valuenow="{{ orcamento.percentual }}" aria-valuemin="0" aria-valuemax="100">
+                                        <div class="progress-bar {% if orcamento.percentual > 100 %}bg-danger{% elif orcamento.percentual > 80 %}bg-warning{% else %}bg-success{% endif %} barra-percentual" data-percentual="{{ orcamento.percentual }}"></div>
+                                    </div>
+                                    <small class="text-muted">Gasto: R$ {{ orcamento.valor_gasto }}</small>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="card-body">
+                        <p class="text-muted">Nenhum orçamento registrado</p>
                     </div>
                 {% endif %}
             </div>
