@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from decimal import Decimal
 from django.db.models import Sum
 import uuid
+from datetime import datetime
 
 # Class Conta representa uma conta financeira do usuário, como conta corrente, poupança, carteira, etc.
 class Conta(models.Model):
@@ -80,23 +81,40 @@ class Transacao(models.Model):
 
     def __str__(self):        
         return f"{self.tipo.capitalize()} de R${self.valor} em {self.data} - {self.conta.nome}"
-    
-# SnapshotMensal representa um resumo mensal das finanças do usuário, incluindo o saldo final,
-# total de receitas e despesas para um determinado mês e ano. Ele é associado a um usuário e 
-# opcionalmente a uma conta específica.
-class SnapshotMensal(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    conta = models.ForeignKey("Conta", on_delete=models.CASCADE, null=True, blank=True)
 
-    ano = models.PositiveIntegerField()
-    mes = models.PositiveIntegerField()
-
-    saldo_final = models.DecimalField(max_digits=12, decimal_places=2)
-    total_receitas = models.DecimalField(max_digits=12, decimal_places=2)
-    total_despesas = models.DecimalField(max_digits=12, decimal_places=2)
-
-    criado_em = models.DateTimeField(auto_now_add=True)
+# OrcamentoMensal representa o orçamento mensal do usuário para um determinado mês e ano, associado a uma conta específica. 
+# Ele inclui o valor orçado e o valor gasto para aquele período.
+class OrcamentoMensal(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name='ID')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
+    conta = models.ForeignKey(Conta, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Conta')
+    categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, null=True, blank=True, verbose_name='Categoria')
+    ano = models.PositiveIntegerField(default=datetime.now().year, verbose_name='Ano')
+    mes = models.PositiveIntegerField(default=datetime.now().month, verbose_name='Mês')
+    valor_orcado = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Valor Orçado')
+    valor_gasto = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Valor Gasto')
+    criado_em = models.DateTimeField(auto_now_add=True, verbose_name='Criado em')
 
     class Meta:
         unique_together = ("usuario", "conta", "ano", "mes")
         ordering = ['-ano', '-mes']
+
+# SnapshotMensal representa um resumo mensal das finanças do usuário, incluindo o saldo final,
+# total de receitas e despesas para um determinado mês e ano. Ele é associado a um usuário e 
+# opcionalmente a uma conta específica.
+class SnapshotMensal(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid.uuid4,editable=False, verbose_name='ID')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Usuário')
+    conta = models.ForeignKey("Conta", on_delete=models.CASCADE, null=True, blank=True, verbose_name='Conta')
+    ano = models.PositiveIntegerField(default=datetime.now().year, verbose_name='Ano')
+    mes = models.PositiveIntegerField(default=datetime.now().month, verbose_name='Mês')
+    saldo_final = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Saldo Final')
+    total_receitas = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Total de Receitas')
+    total_despesas = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Total de Despesas')
+    criado_em = models.DateTimeField(auto_now_add=True, verbose_name='Criado em')
+
+    class Meta:
+        unique_together = ("usuario", "conta", "ano", "mes")
+        ordering = ['-ano', '-mes']
+
+
