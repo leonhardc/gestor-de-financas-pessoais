@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Orçamentos{% endblock %}
+{% block content %}
+
+    <div class="container mt-5">
+        <div class="row mb-4">
+            <div class="col-md-8">
+                <h1 class="h3">Orçamentos</h1>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{% url 'contas:novo_orcamento' %}" class="btn btn-primary">
+                    <i class="bi bi-plus-circle"></i> Novo Orçamento
+                </a>
+            </div>
+        </div>
+
+        {% if orcamentos %}
+            <div class="row">
+                {% for orcamento in orcamentos %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ orcamento.categoria }}</h5>
+                                <p class="card-text text-muted">{{ orcamento.mes }}/{{ orcamento.ano }}</p>
+                                <p class="card-text">
+                                    <strong>Valor:</strong> R$ {{ orcamento.valor_orcado|floatformat:2 }}
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <a href="{% url 'contas:ler_orcamento' orcamento.pk %}" class="btn btn-sm btn-info">Ver</a>
+                                <a href="{% url 'contas:atualizar_orcamento' orcamento.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                                <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ orcamento.pk }}">
+                                    Excluir
+                                </button>
+
+                                <!-- Modal de confirmação -->
+                                <div class="modal fade" id="deleteModal{{ orcamento.pk }}" tabindex="-1">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Confirmar exclusão</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Tem certeza que deseja excluir este orçamento?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                                <form method="POST" action="{% url 'contas:deletar_orcamento' orcamento.pk %}" style="display:inline;">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">Excluir</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center" role="alert">
+                <i class="bi bi-info-circle"></i> Nenhum orçamento encontrado.
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock %}

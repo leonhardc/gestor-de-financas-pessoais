@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Detalhes do Orçamento{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="mb-4">Detalhes do Orçamento</h1>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text">
+                <strong>Usuário:</strong> {{ orcamento.usuario }}
+            </p>
+            <p class="card-text">
+                <strong>Categoria:</strong> {{ orcamento.categoria }}
+            </p>
+            <p class="card-text">
+                <strong>Mês/Ano:</strong> {{ orcamento.mes }}/{{ orcamento.ano }}
+            </p>
+            <p class="card-text">
+                <strong>Valor Orçado:</strong> R$ {{ orcamento.valor_orcado|floatformat:2 }}
+            </p>
+            <p class="card-text">
+                <strong>Criado em:</strong> <small class="text-muted">{{ orcamento.criado_em }}</small>
+            </p>
+            <p class="card-text">
+                <strong>Gasto Atual:</strong> R$ {{ total|floatformat:2 }}
+            </p>
+            <p class="card-text">
+                <strong>Saldo Restante:</strong> R$ {{ orcamento.valor_orcado }}
+                {% if total %}
+                    - R$ {{ total|floatformat:2 }}
+                    = R$ {{ saldo|floatformat:2 }}
+                {% else %}
+                    (Sem gastos registrados)
+                {% endif %}
+            </p>
+        </div>
+    <div class="card-footer">
+        <a href="{% url 'contas:listar_orcamentos' %}" class="btn btn-secondary">Voltar</a>
+    </div>
+    </div>
+</div>
+{% endblock %}
