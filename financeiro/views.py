@@ -78,7 +78,8 @@ def dashboard(request):
         
         # Contexto para o template do dashboard
         contexto = {
-            'contas': contas, 
+            'contas': contas,
+            'saldo_total': saldo_total,
             'transacoes': transacoes, 
             'categorias': categorias, 
             'receita_total': receita_total, 
@@ -128,7 +129,9 @@ def logout(request):
 def listar_contas(request):
     if request.user.is_authenticated:
         contas = Conta.objects.filter(usuario=request.user)
-        return render(request, 'contas/listar_contas.html', {'contas': contas})
+        saldo_total = sum([conta.saldo_atual for conta in contas])  
+        saldo_inicial_total = sum([conta.saldo_inicial for conta in contas])
+        return render(request, 'contas/listar_contas.html', {'contas': contas, 'saldo_total': saldo_total, 'saldo_inicial_total': saldo_inicial_total})
     else:
         return redirect('contas:login')
 
