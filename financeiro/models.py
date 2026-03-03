@@ -92,7 +92,6 @@ class OrcamentoMensal(models.Model):
     ano = models.PositiveIntegerField(default=datetime.now().year, verbose_name='Ano')
     mes = models.PositiveIntegerField(default=datetime.now().month, verbose_name='Mês')
     valor_orcado = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Valor Orçado')
-    valor_gasto = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Valor Gasto')
     criado_em = models.DateTimeField(auto_now_add=True, verbose_name='Criado em')
 
     class Meta:

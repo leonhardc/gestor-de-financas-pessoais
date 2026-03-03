@@ -35,7 +35,7 @@ class CategoriaAdmin(admin.ModelAdmin):
         verbose_name_plural = 'Categorias'
 
 class OrcamentoMensalAdmin(admin.ModelAdmin):
-    list_display = ('conta', 'categoria', 'ano', 'mes', 'valor_orcado', 'valor_gasto')
+    list_display = ('conta', 'categoria', 'ano', 'mes', 'valor_orcado', 'criado_em')
     list_filter = ('ano', 'mes')
     search_fields = ('conta__nome', 'categoria__nome', 'usuario__username')
     ordering = ('-ano', '-mes')

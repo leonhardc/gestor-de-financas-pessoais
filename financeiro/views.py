@@ -363,7 +363,10 @@ def ler_orcamento(request, pk):
     if request.user.is_authenticated:
         try:
             orcamento = OrcamentoMensal.objects.get(id=pk, usuario=request.user)
-            return render(request, 'contas/detalhes_orcamento.html', {'orcamento': orcamento})
+            transacoes_por_categoria_despesa = Transacao.objects.filter(usuario=request.user, tipo='despesa', categoria=orcamento.categoria, data__year=orcamento.ano, data__month=orcamento.mes)
+            total_despesas = sum([transacao.valor for transacao in transacoes_por_categoria_despesa])
+            saldo = orcamento.valor_orcado - total_despesas
+            return render(request, 'contas/detalhes_orcamento.html', {'orcamento': orcamento, 'total': total_despesas, 'saldo': saldo})
         except OrcamentoMensal.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html')
     else:
