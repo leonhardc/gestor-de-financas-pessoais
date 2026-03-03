@@ -60,7 +60,7 @@ def dashboard(request):
 
         receitas_lista = [receitas_dict.get(dia, 0) for dia in dias]
         despesas_lista = [despesas_dict.get(dia, 0) for dia in dias]
-
+        orcamentos = OrcamentoMensal.objects.filter(usuario=request.user, ano=hoje.year, mes=hoje.month)
         # Outros dados...
         contas = Conta.objects.filter(usuario=request.user)
         transacoes = Transacao.objects.filter(usuario=request.user)
@@ -90,6 +90,7 @@ def dashboard(request):
             'receitas': receitas_lista,
             'despesas': despesas_lista,
             'ultimas_transacoes': ultimas_transacoes,
+            'orcamentos': orcamentos,
         }
 
         return render(request, 'contas/dashboard.html', contexto)
