@@ -1,5 +1,5 @@
 from django import forms
-from .models import Conta, Transacao, Categoria
+from .models import Conta, Transacao, Categoria, OrcamentoMensal
 
 class ContaForm(forms.ModelForm):
     class Meta:
@@ -45,6 +45,18 @@ class CategoriaForm(forms.ModelForm):
         widgets = {
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
             'tipo': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+class OrcamentoMensalForm(forms.ModelForm):
+    class Meta:
+        model = OrcamentoMensal
+        fields = ['conta', 'categoria', 'ano', 'mes', 'valor_orcado']
+        widgets = {
+            'conta': forms.Select(attrs={'class': 'form-control'}),
+            'categoria': forms.Select(attrs={'class': 'form-control'}),
+            'ano': forms.NumberInput(attrs={'class': 'form-control'}),
+            'mes': forms.NumberInput(attrs={'class': 'form-control'}),
+            'valor_orcado': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
 class LoginForm(forms.Form):
