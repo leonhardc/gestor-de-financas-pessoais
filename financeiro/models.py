@@ -93,7 +93,18 @@ class OrcamentoMensal(models.Model):
     mes = models.PositiveIntegerField(default=datetime.now().month, verbose_name='Mês')
     valor_orcado = models.DecimalField(max_digits=12, decimal_places=2, verbose_name='Valor Orçado')
     criado_em = models.DateTimeField(auto_now_add=True, verbose_name='Criado em')
-
+    
+    @property
+    def valor_gasto(self):
+        transacoes = Transacao.objects.filter(usuario=self.usuario, tipo='despesa', categoria=self.categoria, data__year=self.ano, data__month=self.mes)
+        return transacoes.aggregate(total=Sum('valor'))['total'] or Decimal('0.00')
+    
+    @property
+    def percentual(self):
+        if self.valor_orcado == 0:
+            return 0
+        return (self.valor_gasto / self.valor_orcado) * 100
+    
     class Meta:
         unique_together = ("usuario", "conta", "ano", "mes")
         ordering = ['-ano', '-mes']
