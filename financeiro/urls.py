@@ -29,4 +29,10 @@ urlpatterns = [
     path("categoria/<uuid:pk>/", ler_categoria, name="ler_categoria"),
     path("categoria/<uuid:pk>/editar/", atualizar_categoria, name="atualizar_categoria"),
     path("categoria/<uuid:pk>/excluir/", deletar_categoria, name="deletar_categoria"),
+    # Orcamento Mensal
+    path("orcamento/", listar_orcamentos, name="listar_orcamentos"),
+    path("orcamento/novo/", criar_orcamento, name="novo_orcamento"),
+    path("orcamento/<uuid:pk>", ler_orcamento, name="ler_orcamento"),
+    path("orcamento/<uuid:pk>/editar/", atualizar_orcamento, name="atualizar_orcamento"),
+    path("orcamento/<uuid:pk>/excluir/", deletar_orcamento, name="deletar_orcamento"),
 ]

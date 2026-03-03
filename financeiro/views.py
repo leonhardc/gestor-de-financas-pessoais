@@ -2,8 +2,8 @@ from datetime import timezone
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
-from .models import Conta, Transacao, Categoria
-from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm
+from .models import Conta, Transacao, Categoria, OrcamentoMensal
+from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm, OrcamentoMensalForm
 from django.db.models import Sum
 from django.db.models.functions import TruncDay
 from datetime import date
@@ -254,12 +254,13 @@ def atualizar_transacao(request, pk):
 def deletar_transacao(request, pk):
     if request.user.is_authenticated:
         try:
-            transacao = Transacao.objects.get(id=pk, usuario=request.user)
-            transacao.delete()
-            # TODO: Criar template transacao_deletada.html para exibir mensagem de sucesso
-            return render(request, 'contas/listar_transacoes.html')
+            if request.method == 'POST':
+                transacao = Transacao.objects.get(id=pk, usuario=request.user)
+                transacao.delete()
+                return render(request, 'contas/listar_transacoes.html')
+            else:
+                return redirect('contas:listar_transacoes')
         except Transacao.DoesNotExist:
-            # TODO: Criar template transacao_nao_encontrada.html para exibir mensagem de erro
             return render(request, 'contas/conta_nao_encontrada.html', context={'transacao': False})
 
 # CRUD de Categoria
@@ -320,10 +321,81 @@ def atualizar_categoria(request, pk):
 def deletar_categoria(request, pk):
     if request.user.is_authenticated:
         try:
-            categoria = Categoria.objects.get(id=pk, usuario=request.user)
-            categoria.delete()
-            return render(request, 'contas/listar_categorias.html')
+            if request.method == 'POST':
+                categoria = Categoria.objects.get(id=pk, usuario=request.user)
+                categoria.delete()
+                return redirect('contas:listar_categorias')
+            else:
+                return redirect('contas:listar_categorias')
         except Categoria.DoesNotExist:
             return render(request, 'contas/conta_nao_encontrada.html')
     else:
        return redirect('contas:login')
+
+# CRUD de OrcamentoMensal
+
+def listar_orcamentos(request):
+    if request.user.is_authenticated:
+        orcamentos = OrcamentoMensal.objects.filter(usuario=request.user)
+        return render(request, 'contas/listar_orcamentos.html', {'orcamentos': orcamentos})
+    else:
+        return redirect('contas:login')
+
+def criar_orcamento(request):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            form = OrcamentoMensalForm()
+            return render(request, 'contas/form.html', {'form': form, 'tipo': 'orcamento', 'modo': 'criar'})
+        if request.method == 'POST':
+            form = OrcamentoMensalForm(request.POST)
+            if form.is_valid():
+                orcamento = form.save(commit=False)
+                orcamento.usuario = request.user
+                orcamento.save()
+                # return render(request, 'contas/detalhes_orcamento.html', {'orcamento': orcamento})
+                return redirect('contas:listar_orcamentos')
+            else:
+                return render(request, 'contas/form.html', {'form': form, 'tipo': 'orcamento', 'modo': 'criar'})
+    else:
+        return redirect('contas:login')
+
+def ler_orcamento(request, pk):
+    if request.user.is_authenticated:
+        try:
+            orcamento = OrcamentoMensal.objects.get(id=pk, usuario=request.user)
+            return render(request, 'contas/detalhes_orcamento.html', {'orcamento': orcamento})
+        except OrcamentoMensal.DoesNotExist:
+            return render(request, 'contas/conta_nao_encontrada.html')
+    else:
+        return redirect('contas:login')
+
+def atualizar_orcamento(request, pk):
+    if request.user.is_authenticated:
+        try:
+            orcamento = OrcamentoMensal.objects.get(id=pk, usuario=request.user)
+            if request.method == 'GET':
+                form = OrcamentoMensalForm(instance=orcamento)
+                return render(request, 'contas/form.html', {'form': form, 'orcamento': orcamento, 'tipo': 'orcamento', 'modo': 'editar'})
+            if request.method == 'POST':
+                form = OrcamentoMensalForm(request.POST, instance=orcamento)
+                if form.is_valid():
+                    form.save()
+                    return render(request, 'contas/detalhes_orcamento.html', {'orcamento': orcamento})
+        except OrcamentoMensal.DoesNotExist:
+            return render(request, 'contas/conta_nao_encontrada.html')
+    else:
+        return redirect('contas:login')
+
+def deletar_orcamento(request, pk):
+    if request.user.is_authenticated:
+        try:
+            if request.method == 'POST':
+                orcamento = OrcamentoMensal.objects.get(id=pk, usuario=request.user)
+                orcamento.delete()
+                return redirect('contas:listar_orcamentos')
+            else:
+                return redirect('contas:listar_orcamentos')
+        except OrcamentoMensal.DoesNotExist:
+            return render(request, 'contas/conta_nao_encontrada.html')
+    else:
+        return redirect('contas:login')
