@@ -219,14 +219,15 @@ def listar_transacoes(request):
                 'transacoes_filtradas': transacoes_filtradas,
                 'receitas': receitas, 
                 'despesas': despesas, 
-                'form': form
+                'form': form,
+                'filtro': True
                 }
             return render(request, 'contas/listar_transacoes.html', context=contexto)
         form = PesquisarTransacaoForm(usuario=request.user)
         transacoes = Transacao.objects.filter(usuario=request.user)
         receitas = sum([t.valor for t in transacoes if t.tipo == 'receita'])
         despesas = sum([t.valor for t in transacoes if t.tipo == 'despesa'])
-        return render(request, 'contas/listar_transacoes.html', {'transacoes': transacoes, 'receitas': receitas, 'despesas': despesas, 'form': form})
+        return render(request, 'contas/listar_transacoes.html', {'transacoes': transacoes, 'receitas': receitas, 'despesas': despesas, 'form': form, 'filtro': False})
     else:
         return redirect('contas:login')
 
@@ -292,8 +293,36 @@ def deletar_transacao(request, pk):
 # CRUD de Categoria
 def listar_categorias(request):
     if request.user.is_authenticated:
+        hoje = date.today()
+
+        despesas_por_categoria = (
+            Transacao.objects
+            .filter(
+                usuario=request.user,
+                tipo='despesa',
+                data__year=hoje.year,
+                data__month=hoje.month
+            )
+            .values('categoria__nome')
+            .annotate(total=Sum('valor'))
+            .order_by('-total')
+        )
+
+        labels = [item['categoria__nome'] for item in despesas_por_categoria]
+        valores = [float(item['total']) for item in despesas_por_categoria]
         categorias = Categoria.objects.filter(usuario=request.user)
-        return render(request, 'contas/listar_categorias.html', {'categorias': categorias})
+        categorias_receitas = Categoria.objects.filter(usuario=request.user, tipo='receita')
+        categorias_despesas = Categoria.objects.filter(usuario=request.user, tipo='despesa')
+
+        context = {
+            'categorias': categorias,
+            'receitas': categorias_receitas,
+            'despesas': categorias_despesas,
+            'labels': labels,
+            'valores': valores,
+        }
+
+        return render(request, 'contas/listar_categorias.html', context)
     else:
         return redirect('contas:login')
 
