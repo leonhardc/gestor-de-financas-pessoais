@@ -3,10 +3,11 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 from .models import Conta, Transacao, Categoria, OrcamentoMensal
-from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm, OrcamentoMensalForm
+from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm, OrcamentoMensalForm, PesquisarTransacaoForm
 from django.db.models import Sum
 from django.db.models.functions import TruncDay
 from datetime import date
+from utils.utils import filtrar_transacoes
 
 # Index
 def index(request):
@@ -203,8 +204,29 @@ def deletar_conta(request, pk):
 # CRUD de Transação
 def listar_transacoes(request):
     if request.user.is_authenticated:
+        if request.GET.get('tipo') or request.GET.get('categoria') or request.GET.get('data_inicio') or request.GET.get('data_fim'):
+            tipo = request.GET.get('tipo')
+            categoria = request.GET.get('categoria')
+            data_inicio = request.GET.get('data_inicio')
+            data_fim = request.GET.get('data_fim')
+            form = PesquisarTransacaoForm(usuario=request.user, initial={'tipo': tipo, 'categoria': categoria, 'data_inicio': data_inicio, 'data_fim': data_fim})
+            transacoes = Transacao.objects.filter(usuario=request.user)
+            receitas = sum([t.valor for t in transacoes if t.tipo == 'receita'])
+            despesas = sum([t.valor for t in transacoes if t.tipo == 'despesa'])
+            transacoes_filtradas = filtrar_transacoes(transacoes, tipo=tipo, categoria=categoria, data_inicio=data_inicio, data_fim=data_fim)
+            contexto = {
+                'transacoes': transacoes, 
+                'transacoes_filtradas': transacoes_filtradas,
+                'receitas': receitas, 
+                'despesas': despesas, 
+                'form': form
+                }
+            return render(request, 'contas/listar_transacoes.html', context=contexto)
+        form = PesquisarTransacaoForm(usuario=request.user)
         transacoes = Transacao.objects.filter(usuario=request.user)
-        return render(request, 'contas/listar_transacoes.html', {'transacoes': transacoes})
+        receitas = sum([t.valor for t in transacoes if t.tipo == 'receita'])
+        despesas = sum([t.valor for t in transacoes if t.tipo == 'despesa'])
+        return render(request, 'contas/listar_transacoes.html', {'transacoes': transacoes, 'receitas': receitas, 'despesas': despesas, 'form': form})
     else:
         return redirect('contas:login')
 
