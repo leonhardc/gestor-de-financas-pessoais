@@ -74,3 +74,6 @@ class PesquisarTransacaoForm(forms.Form):
         super().__init__(*args, **kwargs)
         if usuario:
             self.fields['categoria'].queryset = Categoria.objects.filter(usuario=usuario)
+
+class PesquisarCategoriaForm(forms.Form):
+    nome = forms.CharField(max_length=100, required=False, widget=forms.TextInput(attrs={'class': 'form-control'}))
