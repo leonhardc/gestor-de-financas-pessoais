@@ -18,59 +18,113 @@
     <div class="row">
         <div class="col">
             {% if categorias %}
-                <div class="list-group">
-                    {% for categoria in categorias %}
-                        <div class="list-group-item">
-                            <div class="d-flex w-100 justify-content-between align-items-center">
-                                <div>
-                                    <h6 class="mb-1">{{ categoria.nome }}</h6>
-                                    <small class="text-muted">{{ categoria.criada_em }}</small>
+            <div class="row">
+                <div class="col-md-4 col-12 col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Categorias</h5>
+                            <p class="card-text display-4">{{ categorias|length }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12 col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Receitas</h5>
+                            <p class="card-text display-4">{{ receitas|length }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-12 col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Despesas</h5>
+                            <p class="card-text display-4">{{ despesas|length }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 py-4">
+                <div class="col-6">
+                    <div class="row px-0">
+                        <div class="col-12">
+                            <!-- <input type="text" class="form-control" placeholder="Pesquisar categorias..." id="searchInput"> -->
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-4">
+                            <button class="btn btn-light w-100 border bg-primary text-white" id="btn-todas">Todas</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-light w-100 border" id="btn-receita">Receita</button>
+                        </div>
+                        <div class="col-4">
+                            <button class="btn btn-light w-100 border" id="btn-despesa">Despesa</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
+                {% for categoria in categorias %}
+                <div class="col categoria" data-tipo="{{categoria.tipo}}">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ categoria.nome }}</h5>
+                            <p class="card-text text-muted">
+                                <small>Criada em: {{ categoria.criada_em }}</small>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent border-top">
+                            <div class="d-flex gap-2">
+                                <a href="{% url 'contas:ler_categoria' categoria.id %}"
+                                    class="btn btn-sm btn-info flex-grow-1" title="Ver detalhes">
+                                    <i class="bi bi-eye"></i> Ver
+                                </a>
+                                <a href="{% url 'contas:atualizar_categoria' categoria.id %}"
+                                    class="btn btn-sm btn-warning flex-grow-1" title="Editar">
+                                    <i class="bi bi-pen"></i> Editar
+                                </a>
+                                <button class="btn btn-sm btn-danger flex-grow-1" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal{{ categoria.id }}" title="Excluir">
+                                    <i class="bi bi-trash3"></i> Excluir
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="deleteModal{{ categoria.id }}" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirmar exclusão</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
-                                <div>
-                                    <a href="{% url 'contas:ler_categoria' categoria.id %}" class="btn btn-sm btn-info" title="Ver detalhes">
-                                        <i class="bi bi-plus-square"></i>
-                                    </a>
-                                    <a href="{% url 'contas:atualizar_categoria' categoria.id %}" class="btn btn-sm btn-warning" title="Editar">
-                                        <i class="bi bi-pen"></i>
-                                    </a>
-                                     <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal" data-bs-target="#deleteModal{{ categoria.id }}" title="Excluir">
-                                        <i class="bi bi-trash3"></i>
-                                     </button>
-
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="deleteModal{{ categoria.id }}" tabindex="-1">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Confirmar exclusão</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    Tem certeza que deseja excluir a categoria <strong>{{ categoria.nome }}</strong>?
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                        Cancelar
-                                                    </button>
-                                                    <form method="POST" action="{% url 'contas:deletar_categoria' categoria.id %}">
-                                                        {% csrf_token %}
-                                                        <button type="submit" class="btn btn-danger">
-                                                            Sim, excluir
-                                                        </button>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="modal-body">
+                                    Tem certeza que deseja excluir a categoria <strong>{{ categoria.nome }}</strong>?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Cancelar
+                                    </button>
+                                    <form method="POST" action="{% url 'contas:deletar_categoria' categoria.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">
+                                            Sim, excluir
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
+                    </div>
                 </div>
+                {% endfor %}
+            </div>
             {% else %}
-                <div class="alert alert-info" role="alert">
-                    Nenhuma categoria encontrada.
-                </div>
+            <div class="alert alert-info" role="alert">
+                Nenhuma categoria encontrada.
+            </div>
             {% endif %}
         </div>
     </div>

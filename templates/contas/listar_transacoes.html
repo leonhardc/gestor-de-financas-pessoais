@@ -105,7 +105,7 @@
                     <th>Ações</th>
                 </tr>
             </thead>
-            {% if transacoes_filtradas %}
+            {% if transacoes_filtradas and filtro == True %}
             <tbody>
                 {% for transacao in transacoes_filtradas %}
                 <tr>
@@ -158,7 +158,7 @@
                 </tr>
                 {% endfor %}
             </tbody>
-            {% elif transacoes %}
+            {% elif transacoes and filtro == False %}
             <tbody>
                 {% for transacao in transacoes %}
                 <tr>
@@ -211,6 +211,7 @@
                 </tr>
                 {% endfor %}
             </tbody>
+            {% else %}
             {% endif %}
         </table>
     </div>
