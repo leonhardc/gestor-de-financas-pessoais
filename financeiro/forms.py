@@ -62,3 +62,15 @@ class OrcamentoMensalForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150, widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+class PesquisarTransacaoForm(forms.Form):
+    tipo = forms.ChoiceField(choices=(('', 'Todos'), ('receita', 'Receita'), ('despesa', 'Despesa')), required=False, widget=forms.Select(attrs={'class': 'form-select'}))
+    categoria = forms.ModelChoiceField(queryset=Categoria.objects.none(), required=False, widget=forms.Select(attrs={'class': 'form-select'}))
+    data_inicio = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+    data_fim = forms.DateField(required=False, widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}))
+
+    def __init__(self, *args, **kwargs):
+        usuario = kwargs.pop('usuario', None)
+        super().__init__(*args, **kwargs)
+        if usuario:
+            self.fields['categoria'].queryset = Categoria.objects.filter(usuario=usuario)
