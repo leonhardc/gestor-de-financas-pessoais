@@ -42,7 +42,19 @@ class Categoria(models.Model):
         verbose_name='Tipo da Categoria'
     )
     criada_em = models.DateTimeField(auto_now_add=True, verbose_name='Criada em')
-
+    
+    @property
+    def despesa_categoria(self):
+        if self.tipo == 'despesa':
+            return self.transacao_set.filter(tipo='despesa').aggregate(total=Sum('valor'))['total'] or Decimal('0.00')
+        return Decimal('0.00')
+    
+    @property
+    def receita_categoria(self):
+        if self.tipo == 'receita':
+            return self.transacao_set.filter(tipo='receita').aggregate(total=Sum('valor'))['total'] or Decimal('0.00')
+        return Decimal('0.00')
+    
     class Meta:
         unique_together = ('usuario', 'nome', 'tipo')
         ordering = ['nome']
@@ -106,7 +118,10 @@ class OrcamentoMensal(models.Model):
         return (self.valor_gasto / self.valor_orcado) * 100
     
     class Meta:
-        unique_together = ("usuario", "conta", "ano", "mes")
+        # unique_together = ("usuario", "conta", "categoria", "ano", "mes")
+        constraints = [
+            models.UniqueConstraint(fields=['usuario', 'conta', 'categoria', 'ano', 'mes'], name='unique_orcamento_mensal')
+        ]   
         ordering = ['-ano', '-mes']
 
 # SnapshotMensal representa um resumo mensal das finanças do usuário, incluindo o saldo final,
