@@ -9,7 +9,7 @@
             <h1 class="mb-4">Minhas Contas</h1>
         </div>
         <div class="col-6 col-sm-6 col-md-4 text-end">
-            <a href="{% url 'contas:nova_conta' %}" class="btn btn-primary">
+            <a href="{% url 'contas:nova_conta' %}" class="btn btn-dark">
                 <i class="bi bi-plus-circle"></i>
                 Nova Conta</a>
         </div>
@@ -19,15 +19,15 @@
     <div class="row g-3 d-flex justify-content-center">
         <div class="row d-flex justify-content-space-between">
             <div class="col-12  col-sm-12 col-md-6 col-lg-4 mb-3">
-                <div class="card">
+                <div class="card text-bg-dark shadow">
                     <div class="card-body">
-                        <h5 class="card-title">Total de Contas</h5>
+                        <h5 class="card-title">Contas</h5>
                         <p class="card-text display-4">{% if contas %}{{ contas|length }}{% else %}0{% endif %}</p>
                     </div>
                 </div>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-3">
-                <div class="card">
+                <div class="card text-bg-dark shadow">
                     <div class="card-body">
                         <h5 class="card-title">Saldo Inicial Total</h5>
                         <p class="card-text display-4"> R$ {% if saldo_inicial_total %}{{ saldo_inicial_total }}{% else %}0.00{% endif %}</p>
@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div class="col-12 col-sm-12 col-md-6 col-lg-4 mb-3">
-                <div class="card">
+                <div class="card text-bg-dark shadow">
                     <div class="card-body">
                         <h5 class="card-title">Saldo Atual Total</h5>
                         <p class="card-text display-4"> R$ {% if saldo_total %}{{ saldo_total }}{% else %}0.00{% endif %}</p>
@@ -44,9 +44,9 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="table-responsive">
-                <table class="table table-striped table-hover align-middle">
-                    <thead class="table-light text-center">
+            <div class="table-responsive rounded overflow-hidden shadow">
+                <table class="table table-striped table-hover align-middle border mb-0">
+                    <thead class="table-light text-center table-dark">
                         <tr>
                             <th>Nome</th>
                             <th>Saldo Inicial</th>
@@ -70,13 +70,13 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="{% url 'contas:ler_conta' conta.id %}" class="btn btn-info" title="Ver detalhes">
+                                    <a href="{% url 'contas:ler_conta' conta.id %}" class="btn btn-dark rounded-start" title="Ver detalhes">
                                         <i class="bi bi-plus-square"></i>
                                     </a>
-                                    <a href="{% url 'contas:atualizar_conta' conta.id %}" class="btn btn-warning" title="Editar">
+                                    <a href="{% url 'contas:atualizar_conta' conta.id %}" class="btn btn-dark" title="Editar">
                                         <i class="bi bi-pen"></i>
                                     </a>
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ conta.id }}" title="Excluir">
+                                    <button class="btn btn-dark rounded-end" data-bs-toggle="modal" data-bs-target="#deleteModal{{ conta.id }}" title="Excluir">
                                         <i class="bi bi-trash3"></i>
                                     </button>
 
