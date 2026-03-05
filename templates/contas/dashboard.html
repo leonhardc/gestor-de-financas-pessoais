@@ -12,45 +12,45 @@
 
     <div class="row mb-4">
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
-            <div class="card">
+            <div class="card shadow text-bg-dark">
                 <div class="card-body">
                     <!-- <h6 class="card-title">Receita Total</h6> -->
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Receitas
-                        <i class="bi bi-graph-up-arrow bg-light px-2 py-1 rounded border"></i>
+                        <i class="bi bi-graph-up-arrow px-2 py-1 rounded"></i>
                     </span>
                     <h3 class="card-text">R$ {{ receita_total }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
-            <div class="card">
+            <div class="card shadow text-bg-dark">
                 <div class="card-body">
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Despesas
-                        <i class="bi bi-graph-down-arrow bg-light px-2 py-1 rounded border"></i>
+                        <i class="bi bi-graph-down-arrow px-2 py-1 rounded"></i>
                     </span>
                     <h3 class="card-text">R$ {{ despesa_total }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
-            <div class="card">
+            <div class="card shadow text-bg-dark">
                 <div class="card-body">
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Saldo
-                        <i class="bi bi-wallet2 bg-light px-2 py-1 rounded border"></i>
+                        <i class="bi bi-wallet2 px-2 py-1 rounded"></i>
                     </span>
                     <h3 class="card-text">R$ {{ saldo_total }}</h3>
                 </div>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
-            <div class="card">
+            <div class="card shadow text-bg-dark">
                 <div class="card-body">
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Contas
-                        <i class="bi bi-bank bg-light px-2 py-1 rounded border"></i>
+                        <i class="bi bi-bank px-2 py-1 rounded"></i>
                     </span>
                     <h3 class="card-text">{{ contas|length }}</h3>
                 </div>
@@ -58,8 +58,8 @@
         </div>
     </div>
     <div id="graficos" class="row mb-4">
-        <div id="grafico-despesas" class="col-md-12 mb-2">
-            <div class="card h-100">
+        <div id="grafico-despesas" class="col-md-12 mb-4">
+            <div class="card h-100 shadow">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Receitas e Despesas Mensais</h5>
                 </div>
@@ -69,7 +69,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="card h-100">
+            <div class="card h-100 shadow">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Despesas por Categoria</h5>
                 </div>
@@ -86,12 +86,12 @@
     </div>
     <div class="row">
         <div class="col-md-4 mb-2" style="height: 400px;">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Últimas Transações</h5>
                 </div>
                 {% if ultimas_transacoes %}
-                    <div class="card-body p-0" style="min-height: 500px;max-height: 500px; overflow-y: auto;">
+                    <div class="card-body p-0" style="min-height:500px;max-height: 500px; overflow-y: auto;">
                         <div class="list-group list-group-flush">
                             {% for transacao in ultimas_transacoes %}
                                 <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
@@ -112,12 +112,12 @@
             </div>
         </div>
         <div class="col-md-4 mb-2" style="height: 400px;">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Contas Bancárias</h5>
                 </div>
                 {% if contas %}
-                    <div class="card-body p-0" style="min-height: 500px;max-height: 500px; overflow-y: auto;">
+                    <div class="card-body p-0" style="min-height:500px;max-height: 500px; overflow-y: auto;">
                         <div class="list-group list-group-flush">
                             {% for conta in contas %}
                                 <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
@@ -138,12 +138,12 @@
             </div>
         </div>
         <div class="col-md-4 mb-2" style="height: 400px;">
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Orçamentos Mensais</h5>
                 </div>
                 {% if orcamentos %}
-                    <div class="card-body p-0" style="min-height: 500px;max-height: 500px; overflow-y: auto;">
+                    <div class="card-body p-0" style="min-height:500px;max-height: 500px; overflow-y: auto;">
                         <div class="list-group list-group-flush">
                             {% for orcamento in orcamentos %}
                                 <div class="list-group-item px-4 py-3">
@@ -168,4 +168,5 @@
         </div>
     </div>
 </div>
+<span style="width: 100%; height: 12px;"></span>
 {% endblock %}
