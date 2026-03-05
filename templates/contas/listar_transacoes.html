@@ -9,7 +9,7 @@
             <h1 class="mb-4">Minhas Transações</h1>
         </div>
         <div class="col-md-4 text-end">
-            <a href="{% url 'contas:nova_transacao' %}" class="btn btn-primary">
+            <a href="{% url 'contas:nova_transacao' %}" class="btn btn-dark">
                 <i class="bi bi-plus-circle"></i>
                 Nova Transação
             </a>
@@ -18,26 +18,35 @@
 
     {% if transacoes %}
     <div class="row mb-2">
-        <div class="col-md-4 col-sm-12 mb-3">
-            <div class="card">
+        <div class="col-md-4 col-sm-12 mb-4">
+            <div class="card text-bg-dark shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Total de Transações</h5>
+                    <span class="card-title d-flex justify-content-between w-100">
+                        Transações
+                        <i class="bi bi-arrow-left-right"></i>
+                    </span>
                     <p class="card-text display-4">{{ transacoes|length }}</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-12 mb-3">
-            <div class="card">
+            <div class="card text-bg-dark shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Total de Receitas</h5>
+                    <span class="card-title d-flex justify-content-between w-100">
+                        Receita Total
+                        <i class="bi bi-arrow-up-circle"></i>
+                    </span>
                     <p class="card-text display-4">R$ {{ receitas }}</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-12 mb-3">
-            <div class="card">
+            <div class="card text-bg-dark shadow">
                 <div class="card-body">
-                    <h5 class="card-title">Total de Despesas</h5>
+                    <span class="card-title d-flex justify-content-between w-100">
+                        Despesa Total
+                        <i class="bi bi-arrow-down-circle"></i>
+                    </span>
                     <p class="card-text display-4">R$ {{ despesas }}</p>
                 </div>
             </div>
@@ -45,55 +54,59 @@
     </div>
     <div class="row mb-2">
         <div class="col-12">
-            <form method="GET" class="card card-body mb-4">
-
-                <div class="row g-3">
-
-                    <!-- Tipo -->
-                    <div class="col-md-3">
-                        <label for="{{ form.tipo.id_for_label }}" class="form-label">
-                            Tipo
-                        </label>
-                        {{ form.tipo }}
-                    </div>
-
-                    <!-- Categoria -->
-                    <div class="col-md-3">
-                        <label for="{{ form.categoria.id_for_label }}" class="form-label">
-                            Categoria
-                        </label>
-                        {{ form.categoria }}
-                    </div>
-
-                    <!-- Data início -->
-                    <div class="col-md-3">
-                        <label for="{{ form.data_inicio.id_for_label }}" class="form-label">
-                            Data início
-                        </label>
-                        {{ form.data_inicio }}
-                    </div>
-
-                    <!-- Data fim -->
-                    <div class="col-md-3">
-                        <label for="{{ form.data_fim.id_for_label }}" class="form-label">
-                            Data fim
-                        </label>
-                        {{ form.data_fim }}
-                    </div>
-
+            <div class="card shadow mb-4 border">
+                <div class="card-body">
+                    <form method="GET">
+        
+                        <div class="row g-3">
+        
+                            <!-- Tipo -->
+                            <div class="col-md-3">
+                                <label for="{{ form.tipo.id_for_label }}" class="form-label">
+                                    Tipo
+                                </label>
+                                {{ form.tipo }}
+                            </div>
+        
+                            <!-- Categoria -->
+                            <div class="col-md-3">
+                                <label for="{{ form.categoria.id_for_label }}" class="form-label">
+                                    Categoria
+                                </label>
+                                {{ form.categoria }}
+                            </div>
+        
+                            <!-- Data início -->
+                            <div class="col-md-3">
+                                <label for="{{ form.data_inicio.id_for_label }}" class="form-label">
+                                    Data início
+                                </label>
+                                {{ form.data_inicio }}
+                            </div>
+        
+                            <!-- Data fim -->
+                            <div class="col-md-3">
+                                <label for="{{ form.data_fim.id_for_label }}" class="form-label">
+                                    Data fim
+                                </label>
+                                {{ form.data_fim }}
+                            </div>
+        
+                        </div>
+        
+                        <div class="mt-4 text-end">
+                            <button type="submit" class="btn btn-dark">
+                                Filtrar
+                            </button>
+                        </div>
+        
+                    </form>
                 </div>
-
-                <div class="mt-4 text-end">
-                    <button type="submit" class="btn btn-primary">
-                        Filtrar
-                    </button>
-                </div>
-
-            </form>
+            </div>
         </div>
     </div>
-    <div class="table-responsive">
-        <table class="table table-striped table-hover">
+    <div class="table-responsive shadow rounded mb-4">
+        <table class="table table-striped table-hover mb-0">
             <thead class="table-dark">
                 <tr>
                     <th>Usuário</th>
@@ -116,15 +129,15 @@
                     <td>{{ transacao.tipo }}</td>
                     <td>{{ transacao.categoria }}</td>
                     <td>
-                        <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-info"
+                        <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-dark"
                             title="Ver detalhes">
                             <i class="bi bi-plus-square"></i>
                         </a>
-                        <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-warning"
+                        <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-dark"
                             title="Editar">
                             <i class="bi bi-pen"></i>
                         </a>
-                        <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal"
+                        <button class="btn btn-sm btn-dark rounded" data-bs-toggle="modal"
                             data-bs-target="#deleteModal{{ transacao.id }}" title="Excluir">
                             <i class="bi bi-trash3"></i>
                         </button>
@@ -169,15 +182,15 @@
                     <td>{{ transacao.tipo }}</td>
                     <td>{{ transacao.categoria }}</td>
                     <td>
-                        <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-info"
+                        <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-dark"
                             title="Ver detalhes">
                             <i class="bi bi-plus-square"></i>
                         </a>
-                        <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-warning"
+                        <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-dark"
                             title="Editar">
                             <i class="bi bi-pen"></i>
                         </a>
-                        <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal"
+                        <button class="btn btn-sm btn-dark rounded" data-bs-toggle="modal"
                             data-bs-target="#deleteModal{{ transacao.id }}" title="Excluir">
                             <i class="bi bi-trash3"></i>
                         </button>
