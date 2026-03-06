@@ -6,9 +6,10 @@
         <div class="row mb-4">
             <div class="col-md-8">
                 <h1 class="h3">Orçamentos</h1>
+                <span>Aqui você pode gerenciar seus orçamentos mensais</span>
             </div>
             <div class="col-md-4 text-end">
-                <a href="{% url 'contas:novo_orcamento' %}" class="btn btn-primary">
+                <a href="{% url 'contas:novo_orcamento' %}" class="btn btn-dark bg-gradient">
                     <i class="bi bi-plus-circle"></i> Novo Orçamento
                 </a>
             </div>
@@ -27,9 +28,16 @@
                                 </p>
                             </div>
                             <div class="card-footer bg-transparent">
-                                <a href="{% url 'contas:ler_orcamento' orcamento.pk %}" class="btn btn-sm btn-info">Ver</a>
-                                <a href="{% url 'contas:atualizar_orcamento' orcamento.pk %}" class="btn btn-sm btn-warning">Editar</a>
+                                <a href="{% url 'contas:ler_orcamento' orcamento.pk %}" class="btn btn-sm btn-dark bg-gradient">
+                                    <i class="bi bi-plus-square"></i>
+                                    Ver
+                                </a>
+                                <a href="{% url 'contas:atualizar_orcamento' orcamento.pk %}" class="btn btn-sm btn-secondary bg-gradient">
+                                    <i class="bi bi-pen"></i>
+                                    Editar
+                                </a>
                                 <button type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ orcamento.pk }}">
+                                    <i class="bi bi-trash3"></i>
                                     Excluir
                                 </button>
 

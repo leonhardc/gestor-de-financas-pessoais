@@ -5,11 +5,12 @@
 {% block content %}
 <div class="container mt-5">
     <div class="row mb-4">
-        <div class="col-md-8">
-            <h1 class="mb-4">Minhas Transações</h1>
+        <div class="col-md-8 mb-4">
+            <h1>Minhas Transações</h1>
+            <span>Aqui você pode gerenciar suas transações financeiras</span>
         </div>
         <div class="col-md-4 text-end">
-            <a href="{% url 'contas:nova_transacao' %}" class="btn btn-dark">
+            <a href="{% url 'contas:nova_transacao' %}" class="btn btn-dark bg-gradient">
                 <i class="bi bi-plus-circle"></i>
                 Nova Transação
             </a>
@@ -19,7 +20,7 @@
     {% if transacoes %}
     <div class="row mb-2">
         <div class="col-md-4 col-sm-12 mb-4">
-            <div class="card text-bg-dark shadow">
+            <div class="card text-bg-dark shadow bg-gradient">
                 <div class="card-body">
                     <span class="card-title d-flex justify-content-between w-100">
                         Transações
@@ -30,7 +31,7 @@
             </div>
         </div>
         <div class="col-md-4 col-sm-12 mb-3">
-            <div class="card text-bg-dark shadow">
+            <div class="card text-bg-dark shadow bg-gradient">
                 <div class="card-body">
                     <span class="card-title d-flex justify-content-between w-100">
                         Receita Total
@@ -41,7 +42,7 @@
             </div>
         </div>
         <div class="col-md-4 col-sm-12 mb-3">
-            <div class="card text-bg-dark shadow">
+            <div class="card text-bg-dark shadow bg-gradient">
                 <div class="card-body">
                     <span class="card-title d-flex justify-content-between w-100">
                         Despesa Total
@@ -95,7 +96,7 @@
                         </div>
         
                         <div class="mt-4 text-end">
-                            <button type="submit" class="btn btn-dark">
+                            <button type="submit" class="btn btn-dark bg-gradient">
                                 Filtrar
                             </button>
                         </div>
@@ -129,15 +130,15 @@
                     <td>{{ transacao.tipo }}</td>
                     <td>{{ transacao.categoria }}</td>
                     <td>
-                        <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-dark"
+                        <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-dark bg-gradient"
                             title="Ver detalhes">
                             <i class="bi bi-plus-square"></i>
                         </a>
-                        <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-dark"
+                        <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-dark bg-gradient"
                             title="Editar">
                             <i class="bi bi-pen"></i>
                         </a>
-                        <button class="btn btn-sm btn-dark rounded" data-bs-toggle="modal"
+                        <button class="btn btn-sm btn-dark rounded bg-gradient" data-bs-toggle="modal"
                             data-bs-target="#deleteModal{{ transacao.id }}" title="Excluir">
                             <i class="bi bi-trash3"></i>
                         </button>
@@ -182,15 +183,15 @@
                     <td>{{ transacao.tipo }}</td>
                     <td>{{ transacao.categoria }}</td>
                     <td>
-                        <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-dark"
+                        <a href="{% url 'contas:ler_transacao' transacao.id %}" class="btn btn-sm btn-dark bg-gradient"
                             title="Ver detalhes">
                             <i class="bi bi-plus-square"></i>
                         </a>
-                        <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-dark"
+                        <a href="{% url 'contas:atualizar_transacao' transacao.id %}" class="btn btn-sm btn-dark bg-gradient"
                             title="Editar">
                             <i class="bi bi-pen"></i>
                         </a>
-                        <button class="btn btn-sm btn-dark rounded" data-bs-toggle="modal"
+                        <button class="btn btn-sm btn-danger rounded" data-bs-toggle="modal"
                             data-bs-target="#deleteModal{{ transacao.id }}" title="Excluir">
                             <i class="bi bi-trash3"></i>
                         </button>

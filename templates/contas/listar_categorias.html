@@ -6,10 +6,11 @@
 <div class="container mt-5">
     <div class="row mb-4">
         <div class="col">
-            <h1 class="mb-4">Minhas Categorias</h1>
+            <h1>Minhas Categorias</h1>
+            <span>Aqui você pode gerenciar suas categorias financeiras</span>
         </div>
         <div class="col-auto">
-            <a href="{% url 'contas:nova_categoria' %}" class="btn btn-primary">
+            <a href="{% url 'contas:nova_categoria' %}" class="btn btn-dark bg-gradient">
                 <i class="bi bi-plus-circle"></i>
                 Nova Categoria</a>
         </div>
@@ -20,56 +21,65 @@
             {% if categorias %}
             <div class="row">
                 <div class="col-md-4 col-12 col-sm-4">
-                    <div class="card">
+                    <div class="card text-bg-dark shadow bg-gradient">
                         <div class="card-body">
-                            <h5 class="card-title">Categorias</h5>
+                            <span class="card-title d-flex justify-content-between">
+                                Categorias
+                                <i class="bi bi-bookmark"></i>
+                            </span>
                             <p class="card-text display-4">{{ categorias|length }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-12 col-sm-4">
-                    <div class="card">
+                    <div class="card text-bg-dark shadow bg-gradient">
                         <div class="card-body">
-                            <h5 class="card-title">Receitas</h5>
+                            <span class="card-title d-flex justify-content-between">
+                                Receitas
+                                <i class="bi bi-cash-stack"></i>
+                            </span>
                             <p class="card-text display-4">{{ receitas|length }}</p>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-4 col-12 col-sm-4">
-                    <div class="card">
+                    <div class="card text-bg-dark shadow bg-gradient">
                         <div class="card-body">
-                            <h5 class="card-title">Despesas</h5>
+                            <span class="card-title d-flex justify-content-between">
+                                Despesas
+                                <i class="bi bi-wallet2"></i>
+                            </span>
                             <p class="card-text display-4">{{ despesas|length }}</p>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row mt-4 py-4">
+            <div class="row mt-4 mb-4">
                 <div class="col-6">
                     <div class="row px-0">
                         <div class="col-12">
-                            <!-- <input type="text" class="form-control" placeholder="Pesquisar categorias..." id="searchInput"> -->
+                            <!-- Vazio por enquanto -->
                         </div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="row">
                         <div class="col-4">
-                            <button class="btn btn-light w-100 border bg-primary text-white" id="btn-todas">Todas</button>
+                            <button class="btn btn-light w-100 border bg-dark text-white bg-gradient" id="btn-todas">Todas</button>
                         </div>
                         <div class="col-4">
-                            <button class="btn btn-light w-100 border" id="btn-receita">Receita</button>
+                            <button class="btn btn-light w-100 border text-white bg-secondary bg-gradient" id="btn-receita">Receita</button>
                         </div>
                         <div class="col-4">
-                            <button class="btn btn-light w-100 border" id="btn-despesa">Despesa</button>
+                            <button class="btn btn-light w-100 border text-white bg-secondary bg-gradient" id="btn-despesa">Despesa</button>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mt-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-4">
                 {% for categoria in categorias %}
                 <div class="col categoria" data-tipo="{{categoria.tipo}}">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow">
                         <div class="card-body">
                             <h5 class="card-title">{{ categoria.nome }}</h5>
                             <p class="card-text text-muted">
@@ -79,11 +89,11 @@
                         <div class="card-footer bg-transparent border-top">
                             <div class="d-flex gap-2">
                                 <a href="{% url 'contas:ler_categoria' categoria.id %}"
-                                    class="btn btn-sm btn-info flex-grow-1" title="Ver detalhes">
+                                    class="btn btn-sm btn-dark flex-grow-1 bg-gradient" title="Ver detalhes">
                                     <i class="bi bi-eye"></i> Ver
                                 </a>
                                 <a href="{% url 'contas:atualizar_categoria' categoria.id %}"
-                                    class="btn btn-sm btn-warning flex-grow-1" title="Editar">
+                                    class="btn btn-sm btn-dark flex-grow-1 bg-gradient" title="Editar">
                                     <i class="bi bi-pen"></i> Editar
                                 </a>
                                 <button class="btn btn-sm btn-danger flex-grow-1" data-bs-toggle="modal"
