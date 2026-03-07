@@ -1,5 +1,6 @@
 from datetime import timezone
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 from .models import Conta, Transacao, Categoria, OrcamentoMensal
@@ -457,3 +458,6 @@ def deletar_orcamento(request, pk):
             return render(request, 'contas/conta_nao_encontrada.html')
     else:
         return redirect('contas:login')
+
+def fechar_mes(request):
+    return HttpResponse("Funcionalidade de fechar mês ainda não implementada")
