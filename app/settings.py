@@ -135,3 +135,24 @@ MESSAGE_TAGS = {
 # Configurações do Crispy Forms para usar o Bootstrap 5
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+# emais
+
+# if DEBUG:
+#     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# else:
+#     DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+#     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#     EMAIL_HOST = config('EMAIL_HOST')
+#     EMAIL_PORT = config('EMAIL_PORT')
+#     EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+#     EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+#     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = config('EMAIL_HOST_USER')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
