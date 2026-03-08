@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <h1>Relatórios Mensais</h1>
+    
+    <div class="row mt-4">
+        {% for relatorio in relatorios %}
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">{{ relatorio.mes }}/{{ relatorio.ano }}</h5>
+                    <p class="card-text">
+                        <small class="text-muted">Status: {{ relatorio.status }}</small>
+                    </p>
+                    <a href="{% url 'contas:relatorio_detalhe' relatorio.id %}" class="btn btn-primary btn-sm">
+                        Ver Relatório
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="alert alert-info">Nenhum relatório disponível.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

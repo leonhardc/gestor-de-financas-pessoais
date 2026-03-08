@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1>Fechar Mês</h1>
+            <p class="text-muted">Gerencie e feche os meses abertos</p>
+        </div>
+        <div class="col-md-4 d-flex align-items-center justify-content-md-end gap-2">
+            <a href="{% url 'contas:relatorios' %}" class="btn btn-secondary">
+                Relatórios
+            </a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Mês</th>
+                    <th>Receitas</th>
+                    <th>Despesas</th>
+                    <th>Saldo</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for chave, dados in relatorio_geral.items %}
+                <tr>
+                    <td>{{ chave.1 }}/{{ chave.0 }}</td>
+                    <td class="text-success">R$ {{ dados.total_receitas|floatformat:2 }}</td>
+                    <td class="text-danger">R$ {{ dados.total_despesas|floatformat:2 }}</td>
+                    <td class="fw-bold">R$ {{ dados.saldo_final|floatformat:2 }}</td>
+                    <td><span class="badge bg-warning text-dark">Aberto</span></td>
+                    <td>
+                        <a href="#" class="btn btn-sm btn-info">Detalhes</a>
+                        <a href="{% url 'contas:fechar_mes' %}" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#closeMonthModal{{ forloop.counter }}">Fechar Mês</a>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="closeMonthModal{{ forloop.counter }}" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirmar Fechamento</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Tem certeza que deseja fechar o mês de {{ chave.1 }}/{{ chave.0 }}?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                        <form method="POST" style="display:inline;">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="year" value="{{ chave.0 }}">
+                                            <input type="hidden" name="month" value="{{ chave.1 }}">
+                                            <button type="submit" class="btn btn-danger">Fechar Mês</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+{% endblock %}
