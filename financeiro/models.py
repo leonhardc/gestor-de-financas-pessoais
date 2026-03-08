@@ -82,6 +82,7 @@ class Transacao(models.Model):
     recorrente = models.BooleanField(default=False, verbose_name='Recorrente')
     criada_em = models.DateTimeField(auto_now_add=True, verbose_name='Criada em')
     atualizada_em = models.DateTimeField(auto_now=True, verbose_name='Atualizada em')
+    ativa = models.BooleanField(default=True, verbose_name='Ativa')
 
     class Meta:
         ordering = ['-data', '-criada_em']
