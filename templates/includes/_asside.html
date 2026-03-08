@@ -1,4 +1,4 @@
-<div class="p-3 pt-0 p-lg-4 h-100 d-flex flex-column">
+<div class="p-3 pt-0 p-lg-4 h-100 d-flex flex-column border-end border-secondary rounded-3">
 	<div class="list-group list-group-flush mb-3 mt-4">
 		<a href="{% url 'contas:dashboard' %}" class="list-group-item list-group-item-action bg-dark text-white border-secondary">
 			<i class="bi bi-bar-chart-steps"></i>
@@ -25,8 +25,8 @@
 		<div class="card bg-secondary-subtle border-secondary">
 			<div class="card-body p-2">
 				<div class="d-flex align-items-center justify-content-between">
-					<span class="text-dark">
-						<span class="d-block small text-body-secondary">Logado como</span>
+					<span class="text-light">
+						<span class="d-block small text-body">Logado como</span>
 						<strong>{{ user.username }}</strong>
 					</span>
 					<button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#logoutModal" aria-label="Sair">

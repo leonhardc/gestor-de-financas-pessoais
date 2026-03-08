@@ -16,7 +16,7 @@
         }
     </style>
 </head>
-<body class="m-0{% if user.is_authenticated %} vh-100 overflow-hidden d-flex flex-column{% else %} app-bg{% endif %}" style="background-color: #dcdcdc;">
+<body class="m-0{% if user.is_authenticated %} vh-100 overflow-hidden d-flex flex-column{% else %} app-bg{% endif %}" data-bs-theme="dark">
     {% if user.is_authenticated %}
         <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" tabindex="-1" id="mobileAside" aria-labelledby="mobileAsideLabel">
             <div class="offcanvas-header border-bottom border-secondary">

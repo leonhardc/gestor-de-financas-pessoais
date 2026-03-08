@@ -18,30 +18,34 @@
 
     <div class="row mb-4">
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
-            <div class="card shadow text-bg-dark bg-gradient">
+            <div class="card shadow text-bg-dark bg-gradient h-100">
                 <div class="card-body">
                     <!-- <h6 class="card-title">Receita Total</h6> -->
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Receitas
-                        <i class="bi bi-graph-up-arrow px-2 py-1 rounded"></i>
+                        <i class="bi bi-graph-up-arrow px-2 py-1 rounded text-success"></i>
                     </span>
                     <h3 class="card-text">R$ {{ receita_total }}</h3>
+                    <!-- TODO: Mudar os valores abaixo para valores dinamicos -->
+                    <span class="text-success" style="font-size: 12px;">+12% em relação ao mês anterior</span>
                 </div>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
-            <div class="card shadow text-bg-dark bg-gradient">
+            <div class="card shadow text-bg-dark bg-gradient h-100">
                 <div class="card-body">
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Despesas
-                        <i class="bi bi-graph-down-arrow px-2 py-1 rounded"></i>
+                        <i class="bi bi-graph-down-arrow px-2 py-1 rounded text-danger"></i>
                     </span>
                     <h3 class="card-text">R$ {{ despesa_total }}</h3>
+                    <!-- TODO: Mudar os valores abaixo para valores dinamicos -->
+                    <span class="text-danger" style="font-size: 12px;">-8% em relação ao mês anterior</span>
                 </div>
             </div>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
-            <div class="card shadow text-bg-dark bg-gradient">
+            <div class="card shadow text-bg-dark bg-gradient h-100">
                 <div class="card-body">
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Saldo
@@ -52,7 +56,7 @@
             </div>
         </div>
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
-            <div class="card shadow text-bg-dark bg-gradient">
+            <div class="card shadow text-bg-dark bg-gradient h-100">
                 <div class="card-body">
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Contas
@@ -91,7 +95,7 @@
         {{ despesas|json_script:"dashboard-despesas" }}
     </div>
     <div class="row mb-4">
-        <div class="col-md-4 mb-2" style="height: 400px;">
+        <div class="col-md-4 mb-2">
             <div class="card shadow">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Últimas Transações</h5>
@@ -117,7 +121,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-md-4 mb-2" style="height: 400px;">
+        <div class="col-md-4 mb-2">
             <div class="card shadow">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Contas Bancárias</h5>
@@ -143,7 +147,7 @@
                 {% endif %}
             </div>
         </div>
-        <div class="col-md-4 mb-2" style="height: 400px;">
+        <div class="col-md-4 mb-2">
             <div class="card shadow">
                 <div class="card-header">
                     <h5 class="card-title mb-0">Orçamentos Mensais</h5>

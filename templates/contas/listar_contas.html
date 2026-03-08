@@ -71,10 +71,10 @@
                             </td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <a href="{% url 'contas:ler_conta' conta.id %}" class="btn btn-dark bg-gradient rounded-start" title="Ver detalhes">
+                                    <a href="{% url 'contas:ler_conta' conta.id %}" class="btn btn-secondary bg-gradient rounded-start" title="Ver detalhes">
                                         <i class="bi bi-plus-square"></i>
                                     </a>
-                                    <a href="{% url 'contas:atualizar_conta' conta.id %}" class="btn btn-dark bg-gradient" title="Editar">
+                                    <a href="{% url 'contas:atualizar_conta' conta.id %}" class="btn btn-primary bg-gradient" title="Editar">
                                         <i class="bi bi-pen"></i>
                                     </a>
                                     <button class="btn btn-danger rounded-end" data-bs-toggle="modal" data-bs-target="#deleteModal{{ conta.id }}" title="Excluir">
