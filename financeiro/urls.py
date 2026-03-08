@@ -37,4 +37,6 @@ urlpatterns = [
     path("orcamento/<uuid:pk>/excluir/", deletar_orcamento, name="deletar_orcamento"),
     # Fechar mes
     path("fechar_mes/", fechar_mes, name="fechar_mes"),
+    path("relatorios/", relatorios, name="relatorios"),
+    path("relatorios/<uuid:id>/", relatorio_detalhe, name="relatorio_detalhe"),
 ]

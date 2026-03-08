@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login as auth_login, logout as aut
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
-from .models import Conta, Transacao, Categoria, OrcamentoMensal
+from .models import Conta, SnapshotMensal, Transacao, Categoria, OrcamentoMensal
 from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm, OrcamentoMensalForm, PesquisarTransacaoForm
 from django.db.models import Sum
 from django.db.models.functions import TruncDay
@@ -20,7 +20,7 @@ def dashboard(request):
         # Gerando dados para os graficos do dashboard de pizza de gastos por categoria
         despesas_por_categoria = (
             Transacao.objects
-            .filter(usuario=request.user, tipo='despesa')
+            .filter(usuario=request.user, tipo='despesa', ativa=True)
             .values('categoria__nome')
             .annotate(total=Sum('valor'))
             .order_by('-total')   
@@ -34,7 +34,8 @@ def dashboard(request):
         transacoes = Transacao.objects.filter(
             usuario=request.user,
             data__year=hoje.year,
-            data__month=hoje.month
+            data__month=hoje.month,
+            ativa=True
         )
 
         receitas = (
@@ -65,7 +66,7 @@ def dashboard(request):
         orcamentos = OrcamentoMensal.objects.filter(usuario=request.user, ano=hoje.year, mes=hoje.month)
         # Outros dados...
         contas = Conta.objects.filter(usuario=request.user)
-        transacoes = Transacao.objects.filter(usuario=request.user)
+        transacoes = Transacao.objects.filter(usuario=request.user, ativa=True)
         # # Ultimas 10 transacoes #
         ultimas_transacoes = (
             Transacao.objects
@@ -211,7 +212,7 @@ def listar_transacoes(request):
             data_inicio = request.GET.get('data_inicio')
             data_fim = request.GET.get('data_fim')
             form = PesquisarTransacaoForm(usuario=request.user, initial={'tipo': tipo, 'categoria': categoria, 'data_inicio': data_inicio, 'data_fim': data_fim})
-            transacoes = Transacao.objects.filter(usuario=request.user)
+            transacoes = Transacao.objects.filter(usuario=request.user, ativa=True)
             receitas = sum([t.valor for t in transacoes if t.tipo == 'receita'])
             despesas = sum([t.valor for t in transacoes if t.tipo == 'despesa'])
             transacoes_filtradas = filtrar_transacoes(transacoes, tipo=tipo, categoria=categoria, data_inicio=data_inicio, data_fim=data_fim)
@@ -225,7 +226,7 @@ def listar_transacoes(request):
                 }
             return render(request, 'contas/listar_transacoes.html', context=contexto)
         form = PesquisarTransacaoForm(usuario=request.user)
-        transacoes = Transacao.objects.filter(usuario=request.user)
+        transacoes = Transacao.objects.filter(usuario=request.user, ativa=True)
         receitas = sum([t.valor for t in transacoes if t.tipo == 'receita'])
         despesas = sum([t.valor for t in transacoes if t.tipo == 'despesa'])
         return render(request, 'contas/listar_transacoes.html', {'transacoes': transacoes, 'receitas': receitas, 'despesas': despesas, 'form': form, 'filtro': False})
@@ -460,4 +461,72 @@ def deletar_orcamento(request, pk):
         return redirect('contas:login')
 
 def fechar_mes(request):
-    return HttpResponse("Funcionalidade de fechar mês ainda não implementada")
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            transacoes_ativas = (
+                Transacao.objects
+                .filter(usuario=request.user, ativa=True)
+                .select_related('categoria', 'conta')
+                .order_by('data', 'id')
+            )
+
+            agrupadas = {}
+            for t in transacoes_ativas:
+                chave = (t.data.year, t.data.month)
+                agrupadas.setdefault(chave, []).append(t)
+
+            meses_com_transacoes = [
+                {'ano': ano, 'mes': mes, 'transacoes': lista}
+                for (ano, mes), lista in sorted(agrupadas.items())
+            ]
+            relatorio_geral = {}
+            for mes in meses_com_transacoes:
+                total_receitas = sum(t.valor for t in mes['transacoes'] if t.tipo == 'receita')
+                total_despesas = sum(t.valor for t in mes['transacoes'] if t.tipo == 'despesa')
+                saldo_final = total_receitas - total_despesas
+                relatorio_geral[(mes['ano'], mes['mes'])] = {
+                    'total_receitas': total_receitas,
+                    'total_despesas': total_despesas,
+                    'saldo_final': saldo_final,
+                }
+            return render(
+                request,
+                'contas/fechar_mes.html',
+                {'relatorio_geral': relatorio_geral}
+            )
+        if request.method == 'POST':
+            ano = int(request.POST.get('year'))
+            mes = int(request.POST.get('month'))
+            transacoes_para_fechar = Transacao.objects.filter(
+                usuario=request.user,
+                data__year=ano,
+                data__month=mes,
+                ativa=True
+            )
+            # Salvar o valor das transacoes no SnapshotMensal
+            total_receitas = sum(t.valor for t in transacoes_para_fechar if t.tipo == 'receita')
+            total_despesas = sum(t.valor for t in transacoes_para_fechar if t.tipo == 'despesa')
+            saldo_final = total_receitas - total_despesas
+            SnapshotMensal.objects.create(
+                usuario=request.user,
+                ano=ano,
+                mes=mes,
+                saldo_final=saldo_final,
+                total_receitas=total_receitas,
+                total_despesas=total_despesas,
+            )
+            transacoes_para_fechar.update(ativa=False)
+            return redirect('contas:fechar_mes')
+    else:
+        return redirect('contas:login')
+    
+def relatorios(request):
+    # TODO: Implementar relatorios detalhados por categoria, conta, etc
+    if request.user.is_authenticated:
+        relatorios = SnapshotMensal.objects.filter(usuario=request.user).order_by('-ano', '-mes')
+        return render(request, 'contas/relatorios.html', {'relatorios': relatorios})
+    else:
+        return redirect('contas:login')
+    
+def relatorio_detalhe(request, id):
+    return HttpResponse(f"Detalhes do relatório {id}")
