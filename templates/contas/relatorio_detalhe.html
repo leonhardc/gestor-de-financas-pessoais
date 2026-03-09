@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Detalhes do Relatório - {{ snapshot.ano }}/{{ snapshot.mes }}</h1>
+
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Resumo do Mês</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h6 class="text-muted">Receitas</h6>
+                                <h4 class="text-success">R$ {{ snapshot.total_receitas|default:"0.00" }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h6 class="text-muted">Despesas</h6>
+                                <h4 class="text-danger">R$ {{ snapshot.total_despesas|default:"0.00" }}</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h6 class="text-muted">Saldo</h6>
+                                <h4 class="{% if snapshot.saldo >= 0 %}text-success{% else %}text-danger{% endif %}">R$ {{ snapshot.saldo_final|default:"0.00" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Transações do Período</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead>
+                                <tr>
+                                    <th>Data</th>
+                                    <th>Categoria</th>
+                                    <th>Tipo</th>
+                                    <th class="text-end">Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for transacao in transacoes %}
+                                <tr>
+                                    <td>{{ transacao.data|date:"d/m/Y" }}</td>
+                                    <td><span class="badge bg-light text-dark">{{ transacao.categoria }}</span></td>
+                                    <td>
+                                        {% if transacao.tipo == 'receita' %}
+                                            <span class="badge bg-success">Receita</span>
+                                        {% else %}
+                                            <span class="badge bg-danger">Despesa</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end {% if transacao.tipo == 'receita' %}text-success fw-bold{% else %}text-danger fw-bold{% endif %}">
+                                        {% if transacao.tipo == 'receita' %}+{% else %}-{% endif %} R$ {{ transacao.valor }}
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">Nenhuma transação registrada</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <a href="{% url 'contas:relatorios' %}" class="btn btn-secondary">Voltar</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
