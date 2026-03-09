@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load filters %}
+
+{% block content %}
+
+    <div class="container mt-5">
+        <h1>Detalhes Financeiros - {{ mes|mes_por_extensso }} {{ ano }}</h1>
+        
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Receitas</h5>
+                        <p class="card-text text-success">R$ {{ receitas_mes }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Despesas</h5>
+                        <p class="card-text text-danger">R$ {{ despesas_mes}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Saldo</h5>
+                        <p class="card-text text-primary">R$ {{ saldo }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Economia</h5>
+                        <p class="card-text {% if economia >= 0 %}text-success{% else %}text-danger{% endif %}">R$ {{ economia }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="mt-5">Despesas por Categoria</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Categoria</th>
+                    <th>Valor</th>
+                    <th>Percentual</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for despesa in despesas_por_categoria %}
+                <tr>
+                    <td>{{ despesa.nome_categoria }}</td>
+                    <td>R$ {{ despesa.total }}</td>
+                    <td>{{ despesa.percentual }}%</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
