@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 from .models import Conta, SnapshotMensal, Transacao, Categoria, OrcamentoMensal
 from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm, OrcamentoMensalForm, PesquisarTransacaoForm
-from django.db.models import Sum
+from django.db.models import F, Sum
 from django.db.models.functions import TruncDay
 from datetime import date
 from utils.utils import filtrar_transacoes
@@ -460,6 +460,34 @@ def deletar_orcamento(request, pk):
     else:
         return redirect('contas:login')
 
+# Views de fechamento de mês e relatórios
+
+def detalhes_mes(request, ano, mes):
+    receitas_mes = Transacao.objects.filter(usuario=request.user, tipo='receita', data__year=ano, data__month=mes, ativa=True)
+    soma_receitas_mes = sum([t.valor for t in receitas_mes])
+    despesas_mes = Transacao.objects.filter(usuario=request.user, tipo='despesa', data__year=ano, data__month=mes, ativa=True)
+    soma_despesas_mes = sum([t.valor for t in despesas_mes])
+    saldo = sum([conta.saldo_atual for conta in Conta.objects.filter(usuario=request.user)])
+    economia = saldo - soma_despesas_mes
+
+    # Selecionar despesas por categoria para o mês
+    despesas_por_categoria = (
+        Transacao.objects
+        .filter(usuario=request.user, tipo='despesa', data__year=ano, data__month=mes, ativa=True)
+        .values('categoria')
+        .annotate(total=Sum('valor'), nome_categoria=F('categoria__nome'), percentual=Sum('valor') * 100 / soma_despesas_mes)
+    )
+    contexto = {
+        'ano': ano,
+        'mes': mes,
+        'receitas_mes': soma_receitas_mes,
+        'despesas_mes': soma_despesas_mes,
+        'saldo': saldo,
+        'economia': economia,
+        'despesas_por_categoria': despesas_por_categoria,
+    }
+    return render(request, 'contas/detalhes_mes.html', contexto)
+
 def fechar_mes(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
@@ -529,4 +557,15 @@ def relatorios(request):
         return redirect('contas:login')
     
 def relatorio_detalhe(request, id):
-    return HttpResponse(f"Detalhes do relatório {id}")
+    if not request.user.is_authenticated:
+        return redirect('contas:login')
+    try:
+        snapshot = SnapshotMensal.objects.get(id=id, usuario=request.user)
+        transacoes = Transacao.objects.filter(
+            usuario=request.user,
+            criada_em__year=snapshot.ano,
+            criada_em__month=snapshot.mes
+        )
+        return render(request, 'contas/relatorio_detalhe.html', {'snapshot': snapshot, 'transacoes': transacoes})
+    except SnapshotMensal.DoesNotExist:
+        return redirect('contas:relatorios')
