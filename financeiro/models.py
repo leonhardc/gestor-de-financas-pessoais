@@ -83,6 +83,14 @@ class Transacao(models.Model):
     criada_em = models.DateTimeField(auto_now_add=True, verbose_name='Criada em')
     atualizada_em = models.DateTimeField(auto_now=True, verbose_name='Atualizada em')
     ativa = models.BooleanField(default=True, verbose_name='Ativa')
+    
+    @property
+    def mes(self):
+        return self.criada_em.month
+    
+    @property
+    def ano(self):
+        return self.criada_em.year
 
     class Meta:
         ordering = ['-data', '-criada_em']
