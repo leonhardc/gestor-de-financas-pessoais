@@ -7,7 +7,35 @@
         const valores = JSON.parse(document.getElementById('dashboard-valores').textContent);
     
         const ctx = document.getElementById('graficoDespesas');
-    
+        const ctxLegendas = document.getElementById('graficoDespesasLegendas')
+
+        new Chart(ctxLegendas, {
+            type: 'pie',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: valores,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAscpectRatio: false,
+                radius:0,
+                layout: {
+                    padding: {
+                        left: 40,
+                        right: -100,
+                    },
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'left',
+                    }
+                },
+            }
+        });
+
         new Chart(ctx, {
             type: 'pie',
             data: {
@@ -19,9 +47,15 @@
             options: {
                 responsive: true,
                 maintainAscpectRatio: false,
+                layout: {
+                    padding: {
+                        right: 60,
+                    }
+                    
+                },
                 plugins: {
                     legend: {
-                        display: true,
+                        display: false,
                         position: 'left',
                     }
                 },
