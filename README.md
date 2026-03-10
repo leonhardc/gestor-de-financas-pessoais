@@ -40,6 +40,7 @@ Um gestor de finanças pessoais desenvolvido com Django que permite controlar re
 
 5. **Execute as migrações**
     ```bash
+    python manage.py makemigrations
     python manage.py migrate
     ```
 
@@ -51,3 +52,28 @@ Um gestor de finanças pessoais desenvolvido com Django que permite controlar re
 7. **Acesse a aplicação**
     Abra seu navegador e vá para `http://localhost:8000`
 
+## Galeria de Fotos do Projeto
+
+### Index
+
+![Pagina Inicial](./img/index.png)
+
+### Dashboard
+
+![Dashboard](./img/dashboard.png)
+
+### Contas
+
+![Contas](./img/Contas.png)
+
+### Transações
+
+![Transacoes](./img/Transacoes.png)
+
+### Categorias
+
+![Categorias](./img/Categorias.png)
+
+### Orçamentos
+
+![Orcamentos](./img/Orcamentos.png)
