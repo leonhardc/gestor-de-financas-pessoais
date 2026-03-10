@@ -20,14 +20,12 @@
         <div class="col-12 col-sm-6 col-lg-3 mb-2">
             <div class="card shadow text-bg-dark bg-gradient h-100">
                 <div class="card-body">
-                    <!-- <h6 class="card-title">Receita Total</h6> -->
                     <span class="card-title d-flex align-items-center justify-content-between gap-2">
                         Receitas
                         <i class="bi bi-graph-up-arrow px-2 py-1 rounded text-success"></i>
                     </span>
                     <h3 class="card-text">R$ {{ receita_total }}</h3>
-                    <!-- TODO: Mudar os valores abaixo para valores dinamicos -->
-                    <span class="text-success" style="font-size: 12px;">+12% em relação ao mês anterior</span>
+                    <span class="text-success" style="font-size: 12px;">{{rrma}}% em relação ao mês anterior</span>
                 </div>
             </div>
         </div>
@@ -39,8 +37,7 @@
                         <i class="bi bi-graph-down-arrow px-2 py-1 rounded text-danger"></i>
                     </span>
                     <h3 class="card-text">R$ {{ despesa_total }}</h3>
-                    <!-- TODO: Mudar os valores abaixo para valores dinamicos -->
-                    <span class="text-danger" style="font-size: 12px;">-8% em relação ao mês anterior</span>
+                    <span class="text-danger" style="font-size: 12px;">{{drma}}% em relação ao mês anterior</span>
                 </div>
             </div>
         </div>
@@ -84,7 +81,14 @@
                     <h5 class="card-title mb-0">Despesas por Categoria</h5>
                 </div>
                 <div class="card-body d-flex align-items-center justify-content-center" style="max-height: 300px;">
-                    <canvas id="graficoDespesas"></canvas>
+                    <div class="row">
+                        <div class="col-6 col-md-6">
+                            <canvas id="graficoDespesasLegendas"></canvas>
+                        </div>
+                        <div class="col-6 col-md-6">
+                            <canvas id="graficoDespesas"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

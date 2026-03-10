@@ -8,7 +8,7 @@ from .forms import ContaForm, TransacaoForm, CategoriaForm, LoginForm, Orcamento
 from django.db.models import F, Sum
 from django.db.models.functions import TruncDay
 from datetime import date
-from utils.utils import filtrar_transacoes
+from utils.utils import filtrar_transacoes, mes_ano_anterior
 
 # Index
 def index(request):
@@ -79,6 +79,21 @@ def dashboard(request):
         despesa_total = sum([transacao.valor for transacao in transacoes if transacao.tipo == 'despesa'])
         saldo_total = sum([conta.saldo_atual for conta in contas])
         
+        mes_anterior, ano_anterior = mes_ano_anterior()
+        receitas_mes_anterior = Transacao.objects.filter(usuario=request.user, tipo='receita', criada_em__year=ano_anterior, criada_em__month=mes_anterior)
+        despesas_mes_anterior = Transacao.objects.filter(usuario=request.user, tipo='despesa', criada_em__year=ano_anterior, criada_em__month=mes_anterior)
+        # receita_em_relacao_ao_mes_anterior rrma (%)
+        receita_mes_anterior = sum([t.valor for t in receitas_mes_anterior])
+        if receita_mes_anterior != 0: 
+            rrma = ((receita_total-receita_mes_anterior)/receita_mes_anterior)*100
+        else:
+            rrma = 100
+        # despesa_em_relacao_ao_mes_anterior drma (%)
+        despesa_mes_anterior = sum([t.valor for t in despesas_mes_anterior])
+        if despesa_mes_anterior != 0: 
+            drma = ((despesa_total-despesa_mes_anterior)/despesa_mes_anterior)*100
+        else:
+            drma = 100
         # Contexto para o template do dashboard
         contexto = {
             'contas': contas,
@@ -95,6 +110,8 @@ def dashboard(request):
             'despesas': despesas_lista,
             'ultimas_transacoes': ultimas_transacoes,
             'orcamentos': orcamentos,
+            'rrma': rrma,
+            'drma': drma,
         }
 
         return render(request, 'contas/dashboard.html', contexto)

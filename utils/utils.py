@@ -1,5 +1,5 @@
 from financeiro.models import Transacao
-from datetime import datetime
+from datetime import datetime, date, timedelta
 
 
 def filtrar_transacoes(transacoes, tipo=None, categoria=None, data_inicio=None, data_fim=None):
@@ -17,3 +17,9 @@ def filtrar_transacoes(transacoes, tipo=None, categoria=None, data_inicio=None, 
         return transacoes
     else:
         return transacoes.filter(**filtros)
+    
+def mes_ano_anterior():
+    hoje = date.today()
+    primeiro_dia_mes = hoje.replace(day=1)
+    mes_anterior = primeiro_dia_mes - timedelta(days=1)
+    return (mes_anterior.month, mes_anterior.year)
