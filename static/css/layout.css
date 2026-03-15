@@ -1,0 +1,20 @@
+/* Layout de alguns componentes da aplicacao (ex.: _asside.html) */
+
+.text-shadow {
+    text-shadow: .5px .5px 1px rgb(56, 56, 56);
+    /* Optional: Add a shadow for better visibility */
+}
+
+.text-green {
+    font-weight: bold;
+    color: #28a745;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+    /* Optional: Add a transition for smooth hover effect */
+    text-shadow: .5px .5px 1px rgb(56, 56, 56);
+    /* Initial shadow for better visibility */
+}
+
+.text-green:hover {
+    color: #28a745;
+    text-shadow: .5px .5px 1px rgb(73, 73, 73);
+}
