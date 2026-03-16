@@ -48,7 +48,11 @@
                         Saldo
                         <i class="bi bi-wallet2 px-2 py-1 rounded"></i>
                     </span>
-                    <h3 class="card-text">R$ {{ saldo_total }}</h3>
+                    {% if saldo_total >= 0 %}
+                        <h3 class="card-text text-success">R$ {{ saldo_total }}</h3>
+                    {% else %}
+                        <h3 class="card-text text-danger">R$ {{ saldo_total }}</h3>
+                    {% endif %}
                 </div>
             </div>
         </div>
