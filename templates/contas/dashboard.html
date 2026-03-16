@@ -101,8 +101,9 @@
     <div class="row mb-4">
         <div class="col-md-4 mb-2">
             <div class="card shadow">
-                <div class="card-header text-secondary">
+                <div class="card-header text-secondary d-flex justify-content-between">
                     <h5 class="card-title mb-0">Últimas Transações</h5>
+                    <a class="text-decoration-none" href="{% url 'contas:listar_transacoes' %}">Ver todas</a>
                 </div>
                 {% if ultimas_transacoes %}
                     <div class="card-body p-0" style="min-height:500px;max-height: 500px; overflow-y: auto;">
@@ -110,13 +111,43 @@
                             {% for transacao in ultimas_transacoes %}
                                 <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
                                     <div class="flex-grow-1">
-                                        <p class="mb-1 fw-5">{{ transacao.categoria.nome }}</p>
-                                        <small class="text-muted">{{ transacao.data|date:"d/m/Y" }}</small>
+                                        <div class="d-flex align-items-center">
+                                            {% if transacao.categoria.nome == 'alimentacao' or transacao.categoria.nome == 'alimentaçao' or transacao.categoria.nome == 'alimentação' or transacao.categoria.nome == 'Alimentação' %}
+                                                <i class="bi bi-cup-straw me-2 text-secondary " style="font-size: 2em;"></i>
+                                            {% elif transacao.categoria.nome == 'transporte' or transacao.categoria.nome == 'Transporte' %}
+                                                <i class="bi bi-car-front me-2 text-secondary " style="font-size: 2em;"></i>
+                                            {% elif transacao.categoria.nome == 'lazer' or transacao.categoria.nome == 'Lazer' %}
+                                                <i class="bi bi-controller me-2 text-secondary " style="font-size: 2em;"></i>
+                                            {% elif transacao.categoria.nome == 'saude' or transacao.categoria.nome == 'Saude' or transacao.categoria.nome == 'Saúde' %}
+                                                <i class="bi bi-heart-pulse me-2 text-secondary " style="font-size: 2em;"></i>
+                                            {% elif transacao.categoria.nome == 'moradia' or transacao.categoria.nome == 'Moradia' %}
+                                                <i class="bi bi-house me-2 text-secondary " style="font-size: 2em;"></i>
+                                            {% elif transacao.categoria.nome == 'salario' or transacao.categoria.nome == 'Salario' %}
+                                                <i class="bi bi-currency-dollar me-2 text-secondary " style="font-size: 2em;"></i>
+                                            {% elif transacao.categoria.nome == 'investimentos' or transacao.categoria.nome == 'Investimentos' %}
+                                                <i class="bi bi-bar-chart-line me-2 text-secondary " style="font-size: 2em;"></i>
+                                            {% elif transacao.categoria.nome == 'contas' or transacao.categoria.nome == 'Contas' %}
+                                                <i class="bi bi-bar-chart-line me-2 text-secondary " style="font-size: 2em;"></i>
+                                            {% else %}
+                                                <!-- Outros -->
+                                                <i class="bi bi-coin me-2 text-secondary" style="font-size: 2em;"></i>
+                                            {% endif %}
+                                            <div>
+                                                <p class="mb-0 fw-5">{{ transacao.categoria.nome }}</p>
+                                                <small class="text-muted">{{ transacao.data|date:"d M" }}</small>
+                                            </div>
+                                        </div>
                                     </div>
                                     {% if transacao.categoria.tipo == 'receita' %}
-                                    <span class="text-success">R$ {{ transacao.valor }}</span>
+                                    <span class="text-success">
+                                        <i class="bi bi-caret-up"></i>
+                                        R$ {{ transacao.valor }}
+                                    </span>
                                     {% else %}
-                                    <span class="text-danger">R$ {{ transacao.valor }}</span>
+                                    <span class="text-danger">
+                                        <i class="bi bi-caret-down"></i>
+                                        R$ {{ transacao.valor }}
+                                    </span>
                                     {% endif %}
                                 </div>
                             {% endfor %}
@@ -139,14 +170,23 @@
                         <div class="list-group list-group-flush">
                             {% for conta in contas %}
                                 <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
-                                    <div class="flex-grow-1">
-                                        <p class="mb-1 fw-5">{{ conta.nome }}</p>
-                                        <small class="text-muted">{{ conta.instituicao }}</small>
+                                    <div class="flex-grow-1 d-flex">
+                                        <i class="bi bi-bank text-secondary" style="font-size: 2em;"></i>
+                                        <div class="d-flex flex-column ms-3">
+                                            <p class="mb-1 fw-5">{{ conta.nome }}</p>
+                                            <small class="text-muted">{{ conta.tipo|capfirst }}</small>
+                                        </div>
                                     </div>
                                     {% if conta.saldo_atual >= 0 %}
-                                    <span class="text-success">R$ {{ conta.saldo_atual }}</span>
+                                    <span class="text-success">
+                                        <i class="bi bi-caret-up"></i>
+                                        R$ {{ conta.saldo_atual }}
+                                    </span>
                                     {% else %}
-                                    <span class="text-danger">R$ {{ conta.saldo_atual }}</span>
+                                    <span class="text-danger">
+                                        <i class="bi bi-caret-down"></i>
+                                        R$ {{ conta.saldo_atual }}
+                                    </span>
                                     {% endif %}
                                 </div>
                             {% endfor %}
@@ -171,12 +211,11 @@
                                 <div class="list-group-item px-4 py-3">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <p class="mb-0 fw-5">{{ orcamento.categoria }}</p>
-                                        <span class="text-success">R$ {{ orcamento.valor_orcado }}</span>
+                                        <span class="text-success">R$ {{ orcamento.valor_gasto|floatformat:2 }} / {{ orcamento.valor_orcado|floatformat:2 }}</span>
                                     </div>
-                                    <div class="progress" role="progressbar" aria-valuenow="{{ orcamento.percentual }}" aria-valuemin="0" aria-valuemax="100">
+                                    <div class="progress border" role="progressbar" aria-valuenow="{{ orcamento.percentual }}" aria-valuemin="0" aria-valuemax="100">
                                         <div class="progress-bar {% if orcamento.percentual > 100 %}bg-danger{% elif orcamento.percentual > 80 %}bg-warning{% else %}bg-success{% endif %} barra-percentual" data-percentual="{{ orcamento.percentual }}"></div>
                                     </div>
-                                    <small class="text-muted">Gasto: R$ {{ orcamento.valor_gasto }}</small>
                                 </div>
                             {% endfor %}
                         </div>
