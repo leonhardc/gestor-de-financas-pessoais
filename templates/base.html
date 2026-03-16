@@ -7,17 +7,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{% static 'css/layout.css' %}">
-    <style>
-        body.app-bg {
-            min-height: 100vh;
-            background: linear-gradient(160deg, #0f172a 0%, #1e293b 55%, #334155 100%);
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
-    </style>
 </head>
-<body class="m-0{% if user.is_authenticated %} vh-100 overflow-hidden d-flex flex-column{% else %} app-bg{% endif %}" data-bs-theme="dark">
+<body class="m-0{% if user.is_authenticated %} vh-100 overflow-hidden d-flex flex-column{% else %} app-bg{% endif %}">
     {% if user.is_authenticated %}
         <div class="offcanvas offcanvas-start bg-dark text-white d-lg-none" tabindex="-1" id="mobileAside" aria-labelledby="mobileAsideLabel">
             <div class="offcanvas-header border-bottom border-secondary">
@@ -35,14 +26,9 @@
             </aside>
             <div class="col-12 col-lg-9 col-xl-10 h-100 overflow-auto" id="mainContent">
                 {% include "includes/_navbar.html" %}
-                <div class="d-flex align-items-center gap-2 px-3 px-md-4 py-3">
-                <button class="btn btn-sm btn-outline-secondary d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileAside" aria-controls="mobileAside">
-                    <i class="bi bi-list"></i>
-                </button>
-                </div>
-                <main class="px-3 px-md-4 py-0 py-md-1 text-muted h-100">
+                <main class="px-3 px-md-4 py-0 py-md-1 text-muted bg-app min-vh-100" styles="min-height: 100vh;">
     {% else %}
-        <main class="container h-100">
+        <main class="container h-100 bg-app">
     {% endif %}
 
     {% for message in messages %}

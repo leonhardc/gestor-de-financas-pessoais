@@ -1,5 +1,10 @@
 /* Layout de alguns componentes da aplicacao (ex.: _asside.html) */
 
+.bg-app {
+    background-color: #cacaca;
+    /* Optional: Add a background color for better contrast */
+}
+
 .text-shadow {
     text-shadow: .5px .5px 1px rgb(56, 56, 56);
     /* Optional: Add a shadow for better visibility */
@@ -17,4 +22,10 @@
 .text-green:hover {
     color: #28a745;
     text-shadow: .5px .5px 1px rgb(73, 73, 73);
+}
+
+.text-stroke {
+    color: transparent;
+    -webkit-text-stroke: 1px #28a745;
+    /* Creates a stroke effect around the text */
 }
