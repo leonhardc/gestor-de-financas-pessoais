@@ -117,24 +117,24 @@
                                     <div class="flex-grow-1">
                                         <div class="d-flex align-items-center">
                                             {% if transacao.categoria.nome == 'alimentacao' or transacao.categoria.nome == 'alimentaçao' or transacao.categoria.nome == 'alimentação' or transacao.categoria.nome == 'Alimentação' %}
-                                                <i class="bi bi-cup-straw me-2 text-secondary " style="font-size: 2em;"></i>
+                                                <i class="bi bi-cup-straw me-2 text-light border rounded bg-gradient px-2 bg-primary" style="font-size: 2em;"></i>
                                             {% elif transacao.categoria.nome == 'transporte' or transacao.categoria.nome == 'Transporte' %}
-                                                <i class="bi bi-car-front me-2 text-secondary " style="font-size: 2em;"></i>
+                                                <i class="bi bi-car-front me-2 text-light border rounded bg-gradient px-2 bg-primary" style="font-size: 2em;"></i>
                                             {% elif transacao.categoria.nome == 'lazer' or transacao.categoria.nome == 'Lazer' %}
-                                                <i class="bi bi-controller me-2 text-secondary " style="font-size: 2em;"></i>
+                                                <i class="bi bi-controller me-2 text-light border rounded bg-gradient px-2 bg-primary" style="font-size: 2em;"></i>
                                             {% elif transacao.categoria.nome == 'saude' or transacao.categoria.nome == 'Saude' or transacao.categoria.nome == 'Saúde' %}
-                                                <i class="bi bi-heart-pulse me-2 text-secondary " style="font-size: 2em;"></i>
+                                                <i class="bi bi-heart-pulse me-2 text-light border rounded bg-gradient px-2 bg-primary" style="font-size: 2em;"></i>
                                             {% elif transacao.categoria.nome == 'moradia' or transacao.categoria.nome == 'Moradia' %}
-                                                <i class="bi bi-house me-2 text-secondary " style="font-size: 2em;"></i>
+                                                <i class="bi bi-house me-2 text-light border rounded bg-gradient px-2 bg-primary" style="font-size: 2em;"></i>
                                             {% elif transacao.categoria.nome == 'salario' or transacao.categoria.nome == 'Salario' %}
-                                                <i class="bi bi-currency-dollar me-2 text-secondary " style="font-size: 2em;"></i>
+                                                <i class="bi bi-currency-dollar me-2 text-light border rounded bg-gradient px-2 bg-success" style="font-size: 2em;"></i>
                                             {% elif transacao.categoria.nome == 'investimentos' or transacao.categoria.nome == 'Investimentos' %}
-                                                <i class="bi bi-bar-chart-line me-2 text-secondary " style="font-size: 2em;"></i>
+                                                <i class="bi bi-bar-chart-line me-2 text-light border rounded bg-gradient px-2 bg-success" style="font-size: 2em;"></i>
                                             {% elif transacao.categoria.nome == 'contas' or transacao.categoria.nome == 'Contas' %}
-                                                <i class="bi bi-bar-chart-line me-2 text-secondary " style="font-size: 2em;"></i>
+                                                <i class="bi bi-bar-chart-line me-2 text-light border rounded bg-gradient px-2 bg-primary" style="font-size: 2em;"></i>
                                             {% else %}
                                                 <!-- Outros -->
-                                                <i class="bi bi-coin me-2 text-secondary" style="font-size: 2em;"></i>
+                                                <i class="bi bi-coin me-2 text-light border rounded bg-gradient px-2 bg-success" style="font-size: 2em;"></i>
                                             {% endif %}
                                             <div>
                                                 <p class="mb-0 fw-5">{{ transacao.categoria.nome }}</p>
@@ -175,7 +175,7 @@
                             {% for conta in contas %}
                                 <div class="list-group-item d-flex justify-content-between align-items-center px-4 py-3">
                                     <div class="flex-grow-1 d-flex">
-                                        <i class="bi bi-bank text-secondary" style="font-size: 2em;"></i>
+                                        <i class="bi bi-bank text-secondary border rounded bg-gradient px-2 bg-warning" style="font-size: 2em;"></i>
                                         <div class="d-flex flex-column ms-3">
                                             <p class="mb-1 fw-5">{{ conta.nome }}</p>
                                             <small class="text-muted">{{ conta.tipo|capfirst }}</small>
