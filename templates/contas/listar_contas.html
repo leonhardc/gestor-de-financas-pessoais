@@ -3,7 +3,7 @@
 {% block title %}Minhas Contas{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container  py-5">
     <div class="row mb-4">
         <div class="col-6 col-sm-6 col-md-8 mb-4">
             <h1>Minhas Contas</h1>
@@ -27,7 +27,9 @@
                             <h5 class="card-title">Contas</h5>
                             <i class="bi bi-bank"></i>
                         </div>
-                        <p class="card-text display-6">{% if contas %}{{ contas|length }}{% else %}0{% endif %}</p>
+                        <p class="card-text display-6">
+                            <strong>{% if contas %}{{ contas|length }}{% else %}0{% endif %}</strong>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -39,7 +41,7 @@
                             <i class="bi bi-currency-dollar"></i>
                         </div>
                         <p class="card-text display-6 {% if saldo_inicial_total < 0 %}text-danger{% elif saldo_inicial_total > 0 %}text-success{% endif %}">
-                            R$ {% if saldo_inicial_total %}{{ saldo_inicial_total }}{% else %}0.00{% endif %}
+                            <strong>R$ {% if saldo_inicial_total %}{{ saldo_inicial_total }}{% else %}0.00{% endif %}</strong>
                         </p>
                     </div>
                 </div>
@@ -52,7 +54,7 @@
                             <i class="bi bi-currency-dollar"></i>
                         </div>
                         <p class="card-text display-6 {% if saldo_total < 0 %}text-danger{% elif saldo_total > 0 %}text-success{% endif %}">
-                            R$ {% if saldo_total %}{{ saldo_total }}{% else %}0.00{% endif %}
+                            <strong>R$ {% if saldo_total %}{{ saldo_total }}{% else %}0.00{% endif %}</strong>
                         </p>
                     </div>
                 </div>
