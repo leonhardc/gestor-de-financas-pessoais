@@ -9,7 +9,7 @@
                 <span>Aqui você pode gerenciar seus orçamentos mensais</span>
             </div>
             <div class="col-md-4 text-end">
-                <a href="{% url 'contas:novo_orcamento' %}" class="btn btn-dark bg-gradient">
+                <a href="{% url 'contas:novo_orcamento' %}" class="btn btn-outline-primary">
                     <i class="bi bi-plus-circle"></i> Novo Orçamento
                 </a>
             </div>
@@ -20,6 +20,7 @@
                 {% for orcamento in orcamentos %}
                     <div class="col-md-6 col-lg-4 mb-4">
                         <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-primary"></div>
                             <div class="card-body">
                                 <h5 class="card-title">{{ orcamento.categoria }}</h5>
                                 <p class="card-text text-muted">{{ orcamento.mes }}/{{ orcamento.ano }}</p>
