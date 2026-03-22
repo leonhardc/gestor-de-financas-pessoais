@@ -10,7 +10,7 @@
             <span>Aqui você pode gerenciar suas categorias financeiras</span>
         </div>
         <div class="col-auto">
-            <a href="{% url 'contas:nova_categoria' %}" class="btn btn-dark bg-gradient">
+            <a href="{% url 'contas:nova_categoria' %}" class="btn btn-outline-primary bg-gradient">
                 <i class="bi bi-plus-circle"></i>
                 Nova Categoria</a>
         </div>
@@ -21,7 +21,7 @@
             {% if categorias %}
             <div class="row">
                 <div class="col-md-4 col-12 col-sm-4">
-                    <div class="card text-bg-dark shadow bg-gradient">
+                    <div class="card shadow">
                         <div class="card-body">
                             <span class="card-title d-flex justify-content-between">
                                 Categorias
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 col-12 col-sm-4">
-                    <div class="card text-bg-dark shadow bg-gradient">
+                    <div class="card shadow">
                         <div class="card-body">
                             <span class="card-title d-flex justify-content-between">
                                 Receitas
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="col-md-4 col-12 col-sm-4">
-                    <div class="card text-bg-dark shadow bg-gradient">
+                    <div class="card shadow">
                         <div class="card-body">
                             <span class="card-title d-flex justify-content-between">
                                 Despesas
@@ -80,6 +80,7 @@
                 {% for categoria in categorias %}
                 <div class="col categoria" data-tipo="{{categoria.tipo}}">
                     <div class="card h-100 shadow">
+                        <div class="card-header {% if categoria.tipo == 'receita' %}bg-primary{% else %}bg-danger{% endif %}"></div>
                         <div class="card-body">
                             <h5 class="card-title">{{ categoria.nome }}</h5>
                             <p class="card-text text-muted">
